@@ -39,10 +39,15 @@ namespace spice_sample_pos
             this.tsMain = new MaterialSkin.Controls.MaterialTabSelector();
             this.btnAction = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblReceipt = new MaterialSkin.Controls.MaterialLabel();
+            this.pnlResult = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblResult = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tcMain.SuspendLayout();
             this.Purchase.SuspendLayout();
             this.Refund.SuspendLayout();
+            this.pnlResult.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -71,6 +76,7 @@ namespace spice_sample_pos
             // Purchase
             // 
             this.Purchase.BackColor = System.Drawing.SystemColors.Control;
+            this.Purchase.Controls.Add(this.panel1);
             this.Purchase.Controls.Add(this.txtPurchase);
             this.Purchase.Controls.Add(this.materialLabel3);
             this.Purchase.Location = new System.Drawing.Point(4, 22);
@@ -197,6 +203,38 @@ namespace spice_sample_pos
             this.lblReceipt.Size = new System.Drawing.Size(0, 19);
             this.lblReceipt.TabIndex = 8;
             // 
+            // pnlResult
+            // 
+            this.pnlResult.Controls.Add(this.lblResult);
+            this.pnlResult.Controls.Add(this.panel2);
+            this.pnlResult.Location = new System.Drawing.Point(470, 116);
+            this.pnlResult.Name = "pnlResult";
+            this.pnlResult.Size = new System.Drawing.Size(438, 308);
+            this.pnlResult.TabIndex = 9;
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(-4, -88);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(200, 100);
+            this.panel1.TabIndex = 4;
+            // 
+            // lblResult
+            // 
+            this.lblResult.AutoSize = true;
+            this.lblResult.Location = new System.Drawing.Point(3, 0);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(47, 13);
+            this.lblResult.TabIndex = 0;
+            this.lblResult.Text = "lblResult";
+            // 
+            // panel2
+            // 
+            this.panel2.Location = new System.Drawing.Point(56, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(200, 100);
+            this.panel2.TabIndex = 1;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -207,6 +245,7 @@ namespace spice_sample_pos
             this.Controls.Add(this.tsMain);
             this.Controls.Add(this.tcMain);
             this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pnlResult);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "frmMain";
@@ -217,6 +256,8 @@ namespace spice_sample_pos
             this.Purchase.PerformLayout();
             this.Refund.ResumeLayout(false);
             this.Refund.PerformLayout();
+            this.pnlResult.ResumeLayout(false);
+            this.pnlResult.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -234,6 +275,10 @@ namespace spice_sample_pos
         private MaterialSkin.Controls.MaterialSingleLineTextField txtRefund;
         private MaterialSkin.Controls.MaterialRaisedButton btnAction;
         private MaterialSkin.Controls.MaterialLabel lblReceipt;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.FlowLayoutPanel pnlResult;
+        private System.Windows.Forms.Label lblResult;
+        private System.Windows.Forms.Panel panel2;
     }
 }
 

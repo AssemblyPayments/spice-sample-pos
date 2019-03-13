@@ -81,7 +81,11 @@ namespace spice_sample_pos
                         var response = await SpiceApiLib.Refund(PosRefIdHelper(), purchaseAmount, 0, 0, false, 0);
                     }
                     break;
-
+                case "OK":
+                    pnlResult.SendToBack();
+                    lblResult.Text = string.Empty;
+                    ActionButtonControl();
+                    break;
                 default:
                     break;
             }
@@ -90,8 +94,11 @@ namespace spice_sample_pos
         private void DisplayReceipt(string data)
         {
             var result = (JObject) JsonConvert.DeserializeObject(data);
+            var error = result.GetValue("error", StringComparison.OrdinalIgnoreCase);
 
-            lblReceipt.Text = (string)result["Response"]["customer_receipt"];
+            pnlResult.BringToFront();
+            lblResult.Text = error != null ? error.ToString() : (string) result.SelectToken("Response[0].customer_receipt");
+            btnAction.Text = "OK";
         }
 
         private static string PosRefIdHelper()
