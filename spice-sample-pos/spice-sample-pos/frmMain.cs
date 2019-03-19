@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -7,13 +8,12 @@ using Newtonsoft.Json.Linq;
 using spice_sample_pos.Helpers;
 using spice_sample_pos.Models;
 
-// This is the code for your desktop app.
-// Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-
 namespace spice_sample_pos
 {
     public partial class frmMain : MaterialForm
     {
+        private CultureInfo _cultureInfo = new CultureInfo("en-Au"); 
+
         public frmMain()
         {
             InitializeComponent();
@@ -33,12 +33,15 @@ namespace spice_sample_pos
 
         private void tsMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ActionButtonControl();
+            ResetControls();
         }
 
-        private void ActionButtonControl()
+        private void ResetControls()
         {
+            const string moneyDefault = @"0.00";
             var buttonText = string.Empty;
+
+            pnlResult.SendToBack();
 
             switch (tcMain.SelectedTab.Name)
             {
@@ -48,56 +51,111 @@ namespace spice_sample_pos
                 case "Refund":
                     buttonText = "Refund";
                     break;
+                case "SettlementEnquiry":
+                    buttonText = "Enquiry";
+                    break;
                 default:
                     break;
             }
 
+            txtCashout.Text = moneyDefault;
+            txtPurchase.Text = moneyDefault;
+            txtCashout.Text = moneyDefault;
+            txtRefund.Text = moneyDefault;
             btnAction.Text = buttonText;
         }
 
         private async void btnAction_Click(object sender, EventArgs e)
         {
-            var parsed = false;
-
             switch (btnAction.Text)
             {
                 case "Purchase":
-                    parsed = int.TryParse(txtPurchase.Text, out var purchaseAmountCents);
+                    var purchaseParsed = false;
+                    var cashoutParsed = false;
+                    var tipParsed = false;
 
-                    if (parsed)
+                    purchaseParsed = int.TryParse(txtPurchase.Text, NumberStyles.Currency, this._cultureInfo, out var purchaseAmount);
+                    cashoutParsed = int.TryParse(txtCashout.Text, NumberStyles.Currency, this._cultureInfo, out var cashoutAmount);
+                    tipParsed = int.TryParse(txtTip.Text, NumberStyles.Currency, this._cultureInfo, out var tipAmount);
+
+                    if (purchaseParsed && cashoutParsed && tipParsed)
                     {
-                        var purchaseAmount = purchaseAmountCents * 100;
-                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmount, 0, 0, false, 0);
+                        var purchaseAmountCents = purchaseAmount * 100;
+                        var cashoutAmountCents = cashoutAmount * 100;
+                        var tipAmountCents = tipAmount * 100;
+                        
+                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmountCents, tipAmountCents, cashoutAmountCents, false, 0);
 
-                        DisplayReceipt(response);
+                        DisplayResult(response);
                     }
                     break;
                 case "Refund":
-                    parsed = int.TryParse(txtRefund.Text, out var refundAmountCents);
+                    var refundParsed = false;
 
-                    if (parsed)
+                    refundParsed = int.TryParse(txtRefund.Text, NumberStyles.Currency, this._cultureInfo, out var refundAmount);
+
+                    if (refundParsed)
                     {
-                        var purchaseAmount = refundAmountCents * 100;
-                        var response = await SpiceApiLib.Refund(PosRefIdHelper(), purchaseAmount, 0, 0, false, 0);
+                        var refundAmountCents = refundAmount * 100;
+                        var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmountCents);
+
+                        DisplayResult(response);
                     }
                     break;
+                case "Enquiry":
+                    var enquiry = SpiceApiLib.SettlementEnquiry(PosRefIdHelper());
+
+                    DisplayResult(enquiry);
+                    break;
                 case "OK":
-                    pnlResult.SendToBack();
                     lblResult.Text = string.Empty;
-                    ActionButtonControl();
+                    ResetControls();
                     break;
                 default:
                     break;
             }
         }
 
-        private void DisplayReceipt(string data)
+        private void DisplayResult(string data)
         {
-            var result = (JObject) JsonConvert.DeserializeObject(data);
-            var error = result.GetValue("error", StringComparison.OrdinalIgnoreCase);
+            // temp error handling
+            try
+            {
+                var obj = JToken.Parse(data);
+            }
+            catch
+            {
+                DisplayResultHelper(data);
+                return;
+            }
 
+            var result = (JObject) JsonConvert.DeserializeObject(data);
+
+            var error = result.GetValue("error", StringComparison.OrdinalIgnoreCase);
+            if (error != null)
+            {
+                DisplayResultHelper(error.ToString());
+                return;
+            }
+
+            var errorDetail = result.SelectToken("Response.error_detail");
+            if (errorDetail != null)
+            {
+                DisplayResultHelper(errorDetail.ToString());
+                return;
+            }
+
+            var receipt = result.SelectToken("Response.customer_receipt");
+            if (receipt != null)
+            {
+                DisplayResultHelper(receipt.ToString());
+            }
+        }
+
+        private void DisplayResultHelper(string displayText)
+        {
+            lblResult.Text = displayText;
             pnlResult.BringToFront();
-            lblResult.Text = error != null ? error.ToString() : (string) result.SelectToken("Response[0].customer_receipt");
             btnAction.Text = "OK";
         }
 

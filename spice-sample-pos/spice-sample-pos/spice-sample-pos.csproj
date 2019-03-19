@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Flurl, Version=2.8.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Flurl.2.8.1\lib\net40\Flurl.dll</HintPath>
@@ -66,6 +69,8 @@
     </Compile>
     <Compile Include="Models\PurchaseRequest.cs" />
     <Compile Include="Helpers\SpiceApiLib.cs" />
+    <Compile Include="Models\RefundRequest.cs" />
+    <Compile Include="Models\SettlementEnquiryRequest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmMain.resx">
@@ -98,6 +103,8 @@
   <ItemGroup>
     <None Include="logo.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

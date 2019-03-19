@@ -31,6 +31,11 @@ namespace spice_sample_pos
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tcMain = new MaterialSkin.Controls.MaterialTabControl();
             this.Purchase = new System.Windows.Forms.TabPage();
+            this.txtTip = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
+            this.txtCashout = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.txtPurchase = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             this.Refund = new System.Windows.Forms.TabPage();
@@ -40,9 +45,9 @@ namespace spice_sample_pos
             this.btnAction = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblReceipt = new MaterialSkin.Controls.MaterialLabel();
             this.pnlResult = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.lblResult = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.SettlementEnquiry = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tcMain.SuspendLayout();
             this.Purchase.SuspendLayout();
@@ -64,33 +69,109 @@ namespace spice_sample_pos
             // 
             this.tcMain.Controls.Add(this.Purchase);
             this.tcMain.Controls.Add(this.Refund);
+            this.tcMain.Controls.Add(this.SettlementEnquiry);
             this.tcMain.Depth = 0;
             this.tcMain.Location = new System.Drawing.Point(470, 116);
             this.tcMain.MouseState = MaterialSkin.MouseState.HOVER;
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(442, 179);
+            this.tcMain.Size = new System.Drawing.Size(442, 308);
             this.tcMain.TabIndex = 5;
             this.tcMain.SelectedIndexChanged += new System.EventHandler(this.tsMain_SelectedIndexChanged);
             // 
             // Purchase
             // 
             this.Purchase.BackColor = System.Drawing.SystemColors.Control;
+            this.Purchase.Controls.Add(this.txtTip);
+            this.Purchase.Controls.Add(this.materialLabel4);
+            this.Purchase.Controls.Add(this.txtCashout);
+            this.Purchase.Controls.Add(this.materialLabel2);
             this.Purchase.Controls.Add(this.panel1);
             this.Purchase.Controls.Add(this.txtPurchase);
             this.Purchase.Controls.Add(this.materialLabel3);
             this.Purchase.Location = new System.Drawing.Point(4, 22);
             this.Purchase.Name = "Purchase";
             this.Purchase.Padding = new System.Windows.Forms.Padding(3);
-            this.Purchase.Size = new System.Drawing.Size(434, 153);
+            this.Purchase.Size = new System.Drawing.Size(434, 282);
             this.Purchase.TabIndex = 0;
             this.Purchase.Text = "Purchase";
+            // 
+            // txtTip
+            // 
+            this.txtTip.Depth = 0;
+            this.txtTip.Hint = "";
+            this.txtTip.Location = new System.Drawing.Point(6, 154);
+            this.txtTip.MaxLength = 32767;
+            this.txtTip.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtTip.Name = "txtTip";
+            this.txtTip.PasswordChar = '\0';
+            this.txtTip.SelectedText = "";
+            this.txtTip.SelectionLength = 0;
+            this.txtTip.SelectionStart = 0;
+            this.txtTip.Size = new System.Drawing.Size(348, 23);
+            this.txtTip.TabIndex = 8;
+            this.txtTip.TabStop = false;
+            this.txtTip.Text = "0.00";
+            this.txtTip.UseSystemPasswordChar = false;
+            // 
+            // materialLabel4
+            // 
+            this.materialLabel4.AutoSize = true;
+            this.materialLabel4.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel4.Depth = 0;
+            this.materialLabel4.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel4.Location = new System.Drawing.Point(3, 132);
+            this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel4.Name = "materialLabel4";
+            this.materialLabel4.Size = new System.Drawing.Size(91, 19);
+            this.materialLabel4.TabIndex = 7;
+            this.materialLabel4.Text = "Tip Amount:";
+            // 
+            // txtCashout
+            // 
+            this.txtCashout.Depth = 0;
+            this.txtCashout.Hint = "";
+            this.txtCashout.Location = new System.Drawing.Point(6, 96);
+            this.txtCashout.MaxLength = 32767;
+            this.txtCashout.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtCashout.Name = "txtCashout";
+            this.txtCashout.PasswordChar = '\0';
+            this.txtCashout.SelectedText = "";
+            this.txtCashout.SelectionLength = 0;
+            this.txtCashout.SelectionStart = 0;
+            this.txtCashout.Size = new System.Drawing.Size(348, 23);
+            this.txtCashout.TabIndex = 6;
+            this.txtCashout.TabStop = false;
+            this.txtCashout.Text = "0.00";
+            this.txtCashout.UseSystemPasswordChar = false;
+            // 
+            // materialLabel2
+            // 
+            this.materialLabel2.AutoSize = true;
+            this.materialLabel2.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel2.Depth = 0;
+            this.materialLabel2.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel2.Location = new System.Drawing.Point(2, 74);
+            this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel2.Name = "materialLabel2";
+            this.materialLabel2.Size = new System.Drawing.Size(126, 19);
+            this.materialLabel2.TabIndex = 5;
+            this.materialLabel2.Text = "Cashout Amount:";
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(-4, -88);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(200, 100);
+            this.panel1.TabIndex = 4;
             // 
             // txtPurchase
             // 
             this.txtPurchase.Depth = 0;
             this.txtPurchase.Hint = "";
-            this.txtPurchase.Location = new System.Drawing.Point(6, 50);
+            this.txtPurchase.Location = new System.Drawing.Point(6, 37);
             this.txtPurchase.MaxLength = 32767;
             this.txtPurchase.MouseState = MaterialSkin.MouseState.HOVER;
             this.txtPurchase.Name = "txtPurchase";
@@ -126,7 +207,7 @@ namespace spice_sample_pos
             this.Refund.Location = new System.Drawing.Point(4, 22);
             this.Refund.Name = "Refund";
             this.Refund.Padding = new System.Windows.Forms.Padding(3);
-            this.Refund.Size = new System.Drawing.Size(434, 153);
+            this.Refund.Size = new System.Drawing.Size(434, 282);
             this.Refund.TabIndex = 1;
             this.Refund.Text = "Refund";
             // 
@@ -134,7 +215,7 @@ namespace spice_sample_pos
             // 
             this.txtRefund.Depth = 0;
             this.txtRefund.Hint = "";
-            this.txtRefund.Location = new System.Drawing.Point(6, 50);
+            this.txtRefund.Location = new System.Drawing.Point(6, 37);
             this.txtRefund.MaxLength = 32767;
             this.txtRefund.MouseState = MaterialSkin.MouseState.HOVER;
             this.txtRefund.Name = "txtRefund";
@@ -212,13 +293,6 @@ namespace spice_sample_pos
             this.pnlResult.Size = new System.Drawing.Size(438, 308);
             this.pnlResult.TabIndex = 9;
             // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(-4, -88);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 100);
-            this.panel1.TabIndex = 4;
-            // 
             // lblResult
             // 
             this.lblResult.AutoSize = true;
@@ -234,6 +308,16 @@ namespace spice_sample_pos
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 100);
             this.panel2.TabIndex = 1;
+            // 
+            // SettlementEnquiry
+            // 
+            this.SettlementEnquiry.Location = new System.Drawing.Point(4, 22);
+            this.SettlementEnquiry.Name = "SettlementEnquiry";
+            this.SettlementEnquiry.Padding = new System.Windows.Forms.Padding(3);
+            this.SettlementEnquiry.Size = new System.Drawing.Size(434, 282);
+            this.SettlementEnquiry.TabIndex = 2;
+            this.SettlementEnquiry.Text = "Settlement Enquiry";
+            this.SettlementEnquiry.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
@@ -279,6 +363,11 @@ namespace spice_sample_pos
         private System.Windows.Forms.FlowLayoutPanel pnlResult;
         private System.Windows.Forms.Label lblResult;
         private System.Windows.Forms.Panel panel2;
+        private MaterialSkin.Controls.MaterialLabel materialLabel2;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtCashout;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtTip;
+        private MaterialSkin.Controls.MaterialLabel materialLabel4;
+        private System.Windows.Forms.TabPage SettlementEnquiry;
     }
 }
 
