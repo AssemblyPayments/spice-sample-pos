@@ -1,18 +1,19 @@
 using System;
 using System.Globalization;
-using System.Windows.Forms;
+using System.Reflection;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using spice_sample_pos.Helpers;
-using spice_sample_pos.Models;
 
 namespace spice_sample_pos
 {
     public partial class frmMain : MaterialForm
     {
-        private CultureInfo _cultureInfo = new CultureInfo("en-Au"); 
+        private readonly CultureInfo _cultureInfo = new CultureInfo("en-Au");
+        private const string PosName = "HabaneroPos";
+        private string PosVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
 
         public frmMain()
         {
@@ -84,7 +85,7 @@ namespace spice_sample_pos
                         var cashoutAmountCents = cashoutAmount * 100;
                         var tipAmountCents = tipAmount * 100;
                         
-                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmountCents, tipAmountCents, cashoutAmountCents, false, 0);
+                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmountCents, tipAmountCents, cashoutAmountCents, false, 0, PosName, PosVersion);
 
                         DisplayResult(response);
                     }
@@ -97,13 +98,13 @@ namespace spice_sample_pos
                     if (refundParsed)
                     {
                         var refundAmountCents = refundAmount * 100;
-                        var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmountCents);
+                        var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmountCents, PosName, PosVersion);
 
                         DisplayResult(response);
                     }
                     break;
                 case "Enquiry":
-                    var enquiry = SpiceApiLib.SettlementEnquiry(PosRefIdHelper());
+                    var enquiry = SpiceApiLib.SettlementEnquiry(PosRefIdHelper(), PosName, PosVersion);
 
                     DisplayResult(enquiry);
                     break;

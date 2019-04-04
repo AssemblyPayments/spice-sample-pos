@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Forms.VisualStyles;
 using Flurl;
 using Flurl.Http;
 using spice_sample_pos.Models;
@@ -10,10 +11,13 @@ namespace spice_sample_pos.Helpers
 {
     public static class SpiceApiLib
     {
-        // TODO: Extension methods, abstract error handling
+        private const string HeaderPosName = "POS-Name";
+        private const string HeaderPosVersion = "POS-Version";
+
+        // TODO: Extension methods, abstract error handling and headers
 
         public static string Purchase(string posRefId, int purchaseAmountCents, int tipAmountCents,
-            int cashoutAmountCents, bool promptForCashout, int surchargeAmountCents)
+            int cashoutAmountCents, bool promptForCashout, int surchargeAmountCents, string headerPosName, string headerPosVersion)
         {
             var purchaseRequest = new PurchaseRequest
             {
@@ -29,6 +33,8 @@ namespace spice_sample_pos.Helpers
             {
                 var response = "http://localhost:8282/v1"
                     .AppendPathSegment("purchase")
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
                     .PostJsonAsync(purchaseRequest).ConfigureAwait(false);
 
                 return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
@@ -43,7 +49,7 @@ namespace spice_sample_pos.Helpers
             }
         }
 
-        public static string Refund(string posRefId, int refundAmountCents)
+        public static string Refund(string posRefId, int refundAmountCents, string headerPosName, string headerPosVersion)
         {
             var refundRequest = new RefundRequest
             {
@@ -55,6 +61,8 @@ namespace spice_sample_pos.Helpers
             {
                 var response = "http://localhost:8282/v1"
                     .AppendPathSegment("refund")
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
                     .PostJsonAsync(refundRequest).ConfigureAwait(false);
 
                 return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
@@ -69,7 +77,7 @@ namespace spice_sample_pos.Helpers
             }
         }
 
-        public static string SettlementEnquiry(string posRefId)
+        public static string SettlementEnquiry(string posRefId, string headerPosName, string headerPosVersion)
         {
             var refundRequest = new SettlementEqnuiryRequest()
             {
@@ -80,6 +88,8 @@ namespace spice_sample_pos.Helpers
             {
                 var response = "http://localhost:8282/v1"
                     .AppendPathSegment("settlement_enquiry")
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
                     .PostJsonAsync(refundRequest).ConfigureAwait(false);
 
                 return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
