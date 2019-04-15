@@ -13,7 +13,7 @@ namespace spice_sample_pos
     {
         private readonly CultureInfo _cultureInfo = new CultureInfo("en-Au");
         private const string PosName = "HabaneroPos";
-        private string PosVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
+        private readonly string PosVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
 
         public frmMain()
         {
@@ -39,7 +39,7 @@ namespace spice_sample_pos
 
         private void ResetControls()
         {
-            const string moneyDefault = @"0.00";
+            const string moneyDefault = @"0";
             var buttonText = string.Empty;
 
             pnlResult.SendToBack();
@@ -55,6 +55,9 @@ namespace spice_sample_pos
                 case "SettlementEnquiry":
                     buttonText = "Enquiry";
                     break;
+                case "PayAtTable":
+                    buttonText = "Pay at Table";
+                    break;  
                 default:
                     break;
             }
@@ -71,9 +74,7 @@ namespace spice_sample_pos
             switch (btnAction.Text)
             {
                 case "Purchase":
-                    var purchaseParsed = false;
-                    var cashoutParsed = false;
-                    var tipParsed = false;
+                    bool purchaseParsed, cashoutParsed, tipParsed;
 
                     purchaseParsed = int.TryParse(txtPurchase.Text, NumberStyles.Currency, this._cultureInfo, out var purchaseAmount);
                     cashoutParsed = int.TryParse(txtCashout.Text, NumberStyles.Currency, this._cultureInfo, out var cashoutAmount);
@@ -81,36 +82,36 @@ namespace spice_sample_pos
 
                     if (purchaseParsed && cashoutParsed && tipParsed)
                     {
-                        var purchaseAmountCents = purchaseAmount * 100;
-                        var cashoutAmountCents = cashoutAmount * 100;
-                        var tipAmountCents = tipAmount * 100;
-                        
-                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmountCents, tipAmountCents, cashoutAmountCents, false, 0, PosName, PosVersion);
-
+                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmount, tipAmount, cashoutAmount, false, 0, PosName, PosVersion);
                         DisplayResult(response);
                     }
+
                     break;
                 case "Refund":
-                    var refundParsed = false;
+                    bool refundParsed;
 
                     refundParsed = int.TryParse(txtRefund.Text, NumberStyles.Currency, this._cultureInfo, out var refundAmount);
 
                     if (refundParsed)
                     {
-                        var refundAmountCents = refundAmount * 100;
-                        var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmountCents, PosName, PosVersion);
-
+                        var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmount, PosName, PosVersion);
                         DisplayResult(response);
                     }
+
                     break;
                 case "Enquiry":
                     var enquiry = SpiceApiLib.SettlementEnquiry(PosRefIdHelper(), PosName, PosVersion);
-
                     DisplayResult(enquiry);
+
+                    break;
+                case "Pay at Table":
+                    var payAtTable = SpiceApiLib.PayAtTable(PosName, PosVersion);
+
                     break;
                 case "OK":
                     lblResult.Text = string.Empty;
                     ResetControls();
+
                     break;
                 default:
                     break;

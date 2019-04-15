@@ -79,7 +79,7 @@ namespace spice_sample_pos.Helpers
 
         public static string SettlementEnquiry(string posRefId, string headerPosName, string headerPosVersion)
         {
-            var refundRequest = new SettlementEqnuiryRequest()
+            var SettlementEnquiry = new SettlementEnquiryRequest()
             {
                 PosRefId = posRefId,
             };
@@ -90,7 +90,7 @@ namespace spice_sample_pos.Helpers
                     .AppendPathSegment("settlement_enquiry")
                     .WithHeader(HeaderPosName, headerPosName)
                     .WithHeader(HeaderPosVersion, headerPosVersion)
-                    .PostJsonAsync(refundRequest).ConfigureAwait(false);
+                    .PostJsonAsync(SettlementEnquiry).ConfigureAwait(false);
 
                 return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
             }
@@ -103,5 +103,30 @@ namespace spice_sample_pos.Helpers
                 return ex.Message;
             }
         }
+
+        public static string PayAtTable(string headerPosName, string headerPosVersion)
+        {
+            try
+            {
+                var response = "http://localhost:8282/v1"
+                    .AppendPathSegment("pat")
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
+                    .GetAsync().ConfigureAwait(false);
+
+                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+            }
+            catch (FlurlHttpTimeoutException ex)
+            {
+                return ex.Message;
+            }
+            catch (FlurlHttpException ex)
+            {
+                // need to log and call it again
+                PayAtTable("posname", "posversion");
+                return ex.Message;
+            }
+        }
+
     }
 }
