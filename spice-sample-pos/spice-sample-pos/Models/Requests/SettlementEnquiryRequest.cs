@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace spice_sample_pos.Models
+namespace spice_sample_pos.Models.Requests
 {
     public class SettlementEnquiryRequest
     {

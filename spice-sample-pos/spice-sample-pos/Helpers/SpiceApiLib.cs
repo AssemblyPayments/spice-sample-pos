@@ -1,11 +1,6 @@
-﻿using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Web;
-using System.Windows.Forms.VisualStyles;
-using Flurl;
+﻿using Flurl;
 using Flurl.Http;
-using spice_sample_pos.Models;
+using spice_sample_pos.Models.Requests;
 
 namespace spice_sample_pos.Helpers
 {
@@ -127,6 +122,30 @@ namespace spice_sample_pos.Helpers
                 return ex.Message;
             }
         }
+
+        //public static string PayAtTable(string headerPosName, string headerPosVersion)
+        //{
+        //    try
+        //    {
+        //        var response = "http://localhost:8282/v1"
+        //            .AppendPathSegment("pat")
+        //            .WithHeader(HeaderPosName, headerPosName)
+        //            .WithHeader(HeaderPosVersion, headerPosVersion)
+        //            .PostJsonAsync().ConfigureAwait(false);
+
+        //        return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+        //    }
+        //    catch (FlurlHttpTimeoutException ex)
+        //    {
+        //        return ex.Message;
+        //    }
+        //    catch (FlurlHttpException ex)
+        //    {
+        //        // need to log and call it again
+        //        PayAtTable("posname", "posversion");
+        //        return ex.Message;
+        //    }
+        //}
 
     }
 }

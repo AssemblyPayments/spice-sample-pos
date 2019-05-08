@@ -1,16 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using spice_sample_pos.Helpers;
+using spice_sample_pos.Models;
 
 namespace spice_sample_pos
 {
     public partial class frmMain : MaterialForm
     {
+        // pay at table
+        public static Dictionary<string, PayAtTableBills> patBillStore = new Dictionary<string, PayAtTableBills>(); // billId, Bills
+        public static Dictionary<string, string> patTableToBillMapping = new Dictionary<string, string>(); // tableId, billId
+
         private readonly CultureInfo _cultureInfo = new CultureInfo("en-Au");
         private const string PosName = "HabaneroPos";
         private readonly string PosVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
@@ -30,6 +37,8 @@ namespace spice_sample_pos
                 Primary.Blue500, Accent.LightBlue200,
                 TextShade.WHITE
             );
+
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void tsMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -69,7 +78,7 @@ namespace spice_sample_pos
             btnAction.Text = buttonText;
         }
 
-        private async void btnAction_Click(object sender, EventArgs e)
+        private void btnAction_Click(object sender, EventArgs e)
         {
             switch (btnAction.Text)
             {
@@ -165,5 +174,26 @@ namespace spice_sample_pos
         {
             return Guid.NewGuid().ToString("N");
         }
+
+        private void BtnTable1_Click(object sender, EventArgs e)
+        {
+            var frmPAT = new frmPAT("1");
+            frmPAT.FormClosed += new FormClosedEventHandler(PatFrmClosed);
+            this.Opacity = 0.4;
+            frmPAT.ShowDialog();
+        }
+        private void BtnTable2_Click(object sender, EventArgs e)
+        {
+            var frmPAT = new frmPAT("2");
+            frmPAT.FormClosed += new FormClosedEventHandler(PatFrmClosed);
+            this.Opacity = 0.4;
+            frmPAT.ShowDialog();
+        }
+
+        private void PatFrmClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Opacity = 1;
+        }
+
     }
 }

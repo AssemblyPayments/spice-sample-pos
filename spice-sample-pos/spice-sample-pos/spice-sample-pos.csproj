@@ -67,14 +67,25 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\PurchaseRequest.cs" />
+    <Compile Include="frmPAT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPAT.Designer.cs">
+      <DependentUpon>frmPAT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PayAtTableBills.cs" />
+    <Compile Include="Models\Requests\PayAtTableRequest.cs" />
+    <Compile Include="Models\Requests\PurchaseRequest.cs" />
     <Compile Include="Helpers\SpiceApiLib.cs" />
-    <Compile Include="Models\RefundRequest.cs" />
-    <Compile Include="Models\SettlementEnquiryRequest.cs" />
+    <Compile Include="Models\Requests\RefundRequest.cs" />
+    <Compile Include="Models\Requests\SettlementEnquiryRequest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPAT.resx">
+      <DependentUpon>frmPAT.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
