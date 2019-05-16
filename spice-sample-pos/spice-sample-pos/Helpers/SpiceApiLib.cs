@@ -1,6 +1,8 @@
 ﻿using Flurl;
 using Flurl.Http;
+using System.Net;
 using spice_sample_pos.Models.Requests;
+using System.Threading.Tasks;
 
 namespace spice_sample_pos.Helpers
 {
@@ -99,6 +101,24 @@ namespace spice_sample_pos.Helpers
             }
         }
 
+        //public async static Task<string> PayAtTable(string headerPosName, string headerPosVersion)
+        //{
+        //    try
+        //    {
+        //        var response = await "http://localhost:8282/v1"
+        //            .AppendPathSegment("pat")
+        //            .WithHeader(HeaderPosName, headerPosName)
+        //            .WithHeader(HeaderPosVersion, headerPosVersion)
+        //            .GetAsync().ConfigureAwait(true);
+
+        //        return await response.Content.ReadAsStringAsync();
+        //    }
+        //    catch (System.Exception ex) //TODO: Fix this
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
         public static string PayAtTable(string headerPosName, string headerPosVersion)
         {
             try
@@ -111,41 +131,42 @@ namespace spice_sample_pos.Helpers
 
                 return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
             }
+            catch (System.Exception ex) //TODO: Fix this
+            {
+                throw ex;
+            }
+        }
+
+
+        public static string PayAtTable(string tableId, int outstandingAmount, int totalAmount, string billId, string headerPosName, string headerPosVersion)
+        {
+            var PayAtTableEnquiry = new PayAtTableRequest() // TODO. Fix this
+            {
+                BillId = frmMain.PosRefIdHelper(),
+                OutstandingAmount = 340,
+                Result = "SUCCESS", 
+                TableId = "1",
+                TotalAmount = 340
+            };
+
+            try
+            {
+                var response = "http://localhost:8282/v1"
+                    .AppendPathSegment("pat")
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
+                    .PostJsonAsync(PayAtTableEnquiry).ConfigureAwait(false);
+
+                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+            }
             catch (FlurlHttpTimeoutException ex)
             {
                 return ex.Message;
             }
             catch (FlurlHttpException ex)
             {
-                // need to log and call it again
-                PayAtTable("posname", "posversion");
                 return ex.Message;
             }
         }
-
-        //public static string PayAtTable(string headerPosName, string headerPosVersion)
-        //{
-        //    try
-        //    {
-        //        var response = "http://localhost:8282/v1"
-        //            .AppendPathSegment("pat")
-        //            .WithHeader(HeaderPosName, headerPosName)
-        //            .WithHeader(HeaderPosVersion, headerPosVersion)
-        //            .PostJsonAsync().ConfigureAwait(false);
-
-        //        return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
-        //    }
-        //    catch (FlurlHttpTimeoutException ex)
-        //    {
-        //        return ex.Message;
-        //    }
-        //    catch (FlurlHttpException ex)
-        //    {
-        //        // need to log and call it again
-        //        PayAtTable("posname", "posversion");
-        //        return ex.Message;
-        //    }
-        //}
-
     }
 }

@@ -4,22 +4,19 @@ namespace spice_sample_pos.Models.Requests
 {
     public class PayAtTableRequest
     {
-        [JsonProperty(PropertyName = "posRefId")]
-        public string PosRefId { get; set; }
+        [JsonProperty(PropertyName = "result")]
+        public string Result { get; set; }
 
-        [JsonProperty(PropertyName = "purchaseAmount")]
-        public int PurchaseAmountCents { get; set; }
+        [JsonProperty(PropertyName = "tableId")]
+        public string TableId { get; set; }
 
-        [JsonProperty(PropertyName = "tipAmount")]
-        public int TipAmountCents { get; set; }
+        [JsonProperty(PropertyName = "outstandingAmount")]
+        public int OutstandingAmount { get; set; }
 
-        [JsonProperty(PropertyName = "cashOutAmount")]
-        public int CashOutAmountCents { get; set; }
+        [JsonProperty(PropertyName = "totalAmount")]
+        public int TotalAmount { get; set; }
 
-        [JsonProperty(PropertyName = "promptForCashout")]
-        public bool PromptForCashout { get; set; }
-
-        [JsonProperty(PropertyName = "surchageAmount")]
-        public int SurchageAmountCents { get; set; }
+        [JsonProperty(PropertyName = "billId")]
+        public string BillId { get; set; }
     }
 }

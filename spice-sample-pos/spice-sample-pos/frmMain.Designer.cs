@@ -42,14 +42,14 @@ namespace spice_sample_pos
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.SettlementEnquiry = new System.Windows.Forms.TabPage();
             this.PayAtTable = new System.Windows.Forms.TabPage();
+            this.btnTable2 = new System.Windows.Forms.Button();
+            this.btnTable1 = new System.Windows.Forms.Button();
             this.tsMain = new MaterialSkin.Controls.MaterialTabSelector();
             this.btnAction = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblReceipt = new MaterialSkin.Controls.MaterialLabel();
             this.pnlResult = new System.Windows.Forms.FlowLayoutPanel();
             this.lblResult = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.btnTable1 = new System.Windows.Forms.Button();
-            this.btnTable2 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tcMain.SuspendLayout();
             this.Purchase.SuspendLayout();
@@ -114,12 +114,12 @@ namespace spice_sample_pos
             this.materialLabel4.AutoSize = true;
             this.materialLabel4.BackColor = System.Drawing.SystemColors.Window;
             this.materialLabel4.Depth = 0;
-            this.materialLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.materialLabel4.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialLabel4.Location = new System.Drawing.Point(3, 132);
             this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel4.Name = "materialLabel4";
-            this.materialLabel4.Size = new System.Drawing.Size(139, 18);
+            this.materialLabel4.Size = new System.Drawing.Size(142, 19);
             this.materialLabel4.TabIndex = 7;
             this.materialLabel4.Text = "Tip Amount - Cents:";
             // 
@@ -146,12 +146,12 @@ namespace spice_sample_pos
             this.materialLabel2.AutoSize = true;
             this.materialLabel2.BackColor = System.Drawing.SystemColors.Window;
             this.materialLabel2.Depth = 0;
-            this.materialLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.materialLabel2.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialLabel2.Location = new System.Drawing.Point(2, 74);
             this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel2.Name = "materialLabel2";
-            this.materialLabel2.Size = new System.Drawing.Size(175, 18);
+            this.materialLabel2.Size = new System.Drawing.Size(177, 19);
             this.materialLabel2.TabIndex = 5;
             this.materialLabel2.Text = "Cashout Amount - Cents:";
             // 
@@ -185,12 +185,12 @@ namespace spice_sample_pos
             this.materialLabel3.AutoSize = true;
             this.materialLabel3.BackColor = System.Drawing.SystemColors.Window;
             this.materialLabel3.Depth = 0;
-            this.materialLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialLabel3.Location = new System.Drawing.Point(3, 15);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
-            this.materialLabel3.Size = new System.Drawing.Size(182, 18);
+            this.materialLabel3.Size = new System.Drawing.Size(183, 19);
             this.materialLabel3.TabIndex = 2;
             this.materialLabel3.Text = "Purchase Amount - Cents:";
             // 
@@ -229,12 +229,12 @@ namespace spice_sample_pos
             this.materialLabel1.AutoSize = true;
             this.materialLabel1.BackColor = System.Drawing.SystemColors.Window;
             this.materialLabel1.Depth = 0;
-            this.materialLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialLabel1.Location = new System.Drawing.Point(3, 15);
             this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel1.Name = "materialLabel1";
-            this.materialLabel1.Size = new System.Drawing.Size(166, 18);
+            this.materialLabel1.Size = new System.Drawing.Size(167, 19);
             this.materialLabel1.TabIndex = 3;
             this.materialLabel1.Text = "Refund Amount - Cents:";
             // 
@@ -258,6 +258,28 @@ namespace spice_sample_pos
             this.PayAtTable.Size = new System.Drawing.Size(508, 282);
             this.PayAtTable.TabIndex = 3;
             this.PayAtTable.Text = "Pay at Table";
+            // 
+            // btnTable2
+            // 
+            this.btnTable2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btnTable2.Location = new System.Drawing.Point(292, 57);
+            this.btnTable2.Name = "btnTable2";
+            this.btnTable2.Size = new System.Drawing.Size(171, 139);
+            this.btnTable2.TabIndex = 1;
+            this.btnTable2.Text = "Table 2";
+            this.btnTable2.UseVisualStyleBackColor = false;
+            this.btnTable2.Click += new System.EventHandler(this.BtnTable2_Click);
+            // 
+            // btnTable1
+            // 
+            this.btnTable1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btnTable1.Location = new System.Drawing.Point(52, 57);
+            this.btnTable1.Name = "btnTable1";
+            this.btnTable1.Size = new System.Drawing.Size(171, 139);
+            this.btnTable1.TabIndex = 0;
+            this.btnTable1.Text = "Table 1";
+            this.btnTable1.UseVisualStyleBackColor = false;
+            this.btnTable1.Click += new System.EventHandler(this.BtnTable1_Click);
             // 
             // tsMain
             // 
@@ -292,12 +314,12 @@ namespace spice_sample_pos
             // 
             this.lblReceipt.AutoSize = true;
             this.lblReceipt.Depth = 0;
-            this.lblReceipt.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.lblReceipt.Font = new System.Drawing.Font("Roboto", 11F);
             this.lblReceipt.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblReceipt.Location = new System.Drawing.Point(470, 302);
             this.lblReceipt.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblReceipt.Name = "lblReceipt";
-            this.lblReceipt.Size = new System.Drawing.Size(0, 18);
+            this.lblReceipt.Size = new System.Drawing.Size(0, 19);
             this.lblReceipt.TabIndex = 8;
             // 
             // pnlResult
@@ -324,28 +346,6 @@ namespace spice_sample_pos
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 100);
             this.panel2.TabIndex = 1;
-            // 
-            // btnTable1
-            // 
-            this.btnTable1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.btnTable1.Location = new System.Drawing.Point(52, 57);
-            this.btnTable1.Name = "btnTable1";
-            this.btnTable1.Size = new System.Drawing.Size(171, 139);
-            this.btnTable1.TabIndex = 0;
-            this.btnTable1.Text = "Table 1";
-            this.btnTable1.UseVisualStyleBackColor = false;
-            this.btnTable1.Click += new System.EventHandler(this.BtnTable1_Click);
-            // 
-            // btnTable2
-            // 
-            this.btnTable2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.btnTable2.Location = new System.Drawing.Point(292, 57);
-            this.btnTable2.Name = "btnTable2";
-            this.btnTable2.Size = new System.Drawing.Size(171, 139);
-            this.btnTable2.TabIndex = 1;
-            this.btnTable2.Text = "Table 2";
-            this.btnTable2.UseVisualStyleBackColor = false;
-            this.btnTable2.Click += new System.EventHandler(this.BtnTable2_Click);
             // 
             // pictureBox1
             // 

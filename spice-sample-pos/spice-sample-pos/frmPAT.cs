@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using spice_sample_pos.Helpers;
 
 namespace spice_sample_pos
 {
@@ -47,6 +48,8 @@ namespace spice_sample_pos
             {
                 SelectTab("Open");
             }
+
+            //var bill = frmMain.patBillStore[frmMain.patTableToBillMapping[patCurrentTableId]];
         }
 
         private void BtnPatAction_Click(object sender, EventArgs e)
@@ -64,16 +67,11 @@ namespace spice_sample_pos
                     {
                         AddToTable(patCurrentTableId, amount);
                     }
-
+                    
                     break;
                 default:
                     break;
             }
-        }
-
-        private void BtnPat_Click(object sender, EventArgs e)
-        {
-            // this should trigger pay at table
         }
 
         private void OpenTable()
@@ -99,7 +97,7 @@ namespace spice_sample_pos
             SelectTab("Add");
         }
 
-        private void AddToTable(string tableId, int amountCents)
+        private async void AddToTable(string tableId, int amountCents)
         {
             var bill = frmMain.patBillStore[frmMain.patTableToBillMapping[tableId]];
 
@@ -112,6 +110,15 @@ namespace spice_sample_pos
             bill.OutstandingAmount += amountCents;
 
             DisplayBill(bill);
+
+            if (bill.OutstandingAmount > 0)
+            {
+                // enable PAT
+                await Task.Run(() =>
+                    EnablePat()
+                );
+            };
+
             ResetControls();
         }
 
@@ -143,12 +150,19 @@ namespace spice_sample_pos
                     tcMain.SelectTab(1);
                     DisplayBill(bill);
                     btnPatAction.Text = "Add to Table";
-                    btnPat.Visible = true;
+                    btnPatClose.Visible = true;
                     break;
                 default:
                     tcMain.SelectTab(0);
                     break;
             }
+        }
+
+        private void EnablePat()
+        {
+            _ = SpiceApiLib.PayAtTable(frmMain.PosName, frmMain.PosVersion);
+            var patResult = SpiceApiLib.PayAtTable("success", 340, 340, "bil21", "Test", "test");
+            MessageBox.Show(patResult.ToString());
         }
 
         private void ResetControls()
@@ -158,6 +172,5 @@ namespace spice_sample_pos
             txtPatAmount.Text = moneyDefault;
             txtPatOperatorId.Text = "0";
         }
-
     }
 }

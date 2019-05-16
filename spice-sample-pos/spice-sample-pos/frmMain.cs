@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -19,8 +20,8 @@ namespace spice_sample_pos
         public static Dictionary<string, string> patTableToBillMapping = new Dictionary<string, string>(); // tableId, billId
 
         private readonly CultureInfo _cultureInfo = new CultureInfo("en-Au");
-        private const string PosName = "HabaneroPos";
-        private readonly string PosVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
+        public const string PosName = "HabaneroPos";
+        public static readonly string PosVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
 
         public frmMain()
         {
@@ -170,7 +171,7 @@ namespace spice_sample_pos
             btnAction.Text = "OK";
         }
 
-        private static string PosRefIdHelper()
+        public static string PosRefIdHelper()
         {
             return Guid.NewGuid().ToString("N");
         }
@@ -194,6 +195,5 @@ namespace spice_sample_pos
         {
             this.Opacity = 1;
         }
-
     }
 }

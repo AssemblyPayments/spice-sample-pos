@@ -42,7 +42,7 @@
             this.OutstandingAmount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txtPatAmount = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
-            this.btnPat = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.btnPatClose = new MaterialSkin.Controls.MaterialRaisedButton();
             this.tcMain.SuspendLayout();
             this.Open.SuspendLayout();
             this.Add.SuspendLayout();
@@ -217,31 +217,30 @@
             this.materialLabel5.TabIndex = 3;
             this.materialLabel5.Text = "Amount to Add - Cents:";
             // 
-            // btnPat
+            // btnPatClose
             // 
-            this.btnPat.AutoSize = true;
-            this.btnPat.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnPat.Depth = 0;
-            this.btnPat.Icon = null;
-            this.btnPat.Location = new System.Drawing.Point(442, 354);
-            this.btnPat.MaximumSize = new System.Drawing.Size(91, 36);
-            this.btnPat.MinimumSize = new System.Drawing.Size(91, 36);
-            this.btnPat.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnPat.Name = "btnPat";
-            this.btnPat.Primary = true;
-            this.btnPat.Size = new System.Drawing.Size(91, 36);
-            this.btnPat.TabIndex = 12;
-            this.btnPat.Text = "Pay at Table";
-            this.btnPat.UseVisualStyleBackColor = true;
-            this.btnPat.Visible = false;
-            this.btnPat.Click += new System.EventHandler(this.BtnPat_Click);
+            this.btnPatClose.AutoSize = true;
+            this.btnPatClose.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnPatClose.Depth = 0;
+            this.btnPatClose.Icon = null;
+            this.btnPatClose.Location = new System.Drawing.Point(442, 354);
+            this.btnPatClose.MaximumSize = new System.Drawing.Size(91, 36);
+            this.btnPatClose.MinimumSize = new System.Drawing.Size(91, 36);
+            this.btnPatClose.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnPatClose.Name = "btnPatClose";
+            this.btnPatClose.Primary = true;
+            this.btnPatClose.Size = new System.Drawing.Size(91, 36);
+            this.btnPatClose.TabIndex = 12;
+            this.btnPatClose.Text = "Close Table";
+            this.btnPatClose.UseVisualStyleBackColor = true;
+            this.btnPatClose.Visible = false;
             // 
             // frmPAT
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(645, 402);
-            this.Controls.Add(this.btnPat);
+            this.Controls.Add(this.btnPatClose);
             this.Controls.Add(this.tcMain);
             this.Controls.Add(this.btnPatAction);
             this.MaximizeBox = false;
@@ -274,6 +273,6 @@
         private System.Windows.Forms.ColumnHeader OutstandingAmount;
         private System.Windows.Forms.ColumnHeader TableId;
         private System.Windows.Forms.ColumnHeader OperatorId;
-        private MaterialSkin.Controls.MaterialRaisedButton btnPat;
+        private MaterialSkin.Controls.MaterialRaisedButton btnPatClose;
     }
 }
