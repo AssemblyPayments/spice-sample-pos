@@ -80,12 +80,13 @@ namespace spice_sample_pos.Helpers
             }
         }
 
-        public static string Refund(string posRefId, int refundAmountCents, string headerPosName, string headerPosVersion)
+        public static string Refund(string posRefId, int refundAmountCents, bool suppressMerchantPassword, string headerPosName, string headerPosVersion)
         {
             var refundRequest = new RefundRequest
             {
                 PosRefId = posRefId,
-                RefundAmountCents = refundAmountCents
+                RefundAmountCents = refundAmountCents,
+                SuppressMerchantPassword = suppressMerchantPassword
             };
 
             try

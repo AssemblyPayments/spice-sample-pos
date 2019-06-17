@@ -7,7 +7,10 @@ namespace spice_sample_pos.Models
         [JsonProperty(PropertyName = "posRefId")]
         public string PosRefId { get; set; }
 
-        [JsonProperty(PropertyName = "amountCents")]
+        [JsonProperty(PropertyName = "refundAmount")]
         public int RefundAmountCents { get; set; }
+
+        [JsonProperty(PropertyName = "suppressMerchantPassword")]
+        public bool SuppressMerchantPassword { get; set; }
     }
 }

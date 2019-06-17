@@ -62,6 +62,9 @@ namespace spice_sample_pos
             this.rbSuppressPasswordYes = new MaterialSkin.Controls.MaterialRadioButton();
             this.rbSuppressPasswordNo = new MaterialSkin.Controls.MaterialRadioButton();
             this.materialLabel9 = new MaterialSkin.Controls.MaterialLabel();
+            this.rbRefundSuppressPasswordYes = new MaterialSkin.Controls.MaterialRadioButton();
+            this.rbRefundSuppressPasswordNo = new MaterialSkin.Controls.MaterialRadioButton();
+            this.materialLabel10 = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tcMain.SuspendLayout();
             this.Purchase.SuspendLayout();
@@ -255,6 +258,9 @@ namespace spice_sample_pos
             // Refund
             // 
             this.Refund.BackColor = System.Drawing.SystemColors.Control;
+            this.Refund.Controls.Add(this.rbRefundSuppressPasswordYes);
+            this.Refund.Controls.Add(this.rbRefundSuppressPasswordNo);
+            this.Refund.Controls.Add(this.materialLabel10);
             this.Refund.Controls.Add(this.txtRefund);
             this.Refund.Controls.Add(this.materialLabel1);
             this.Refund.Location = new System.Drawing.Point(4, 22);
@@ -555,6 +561,53 @@ namespace spice_sample_pos
             this.materialLabel9.TabIndex = 15;
             this.materialLabel9.Text = "Suppress Merchant Password?";
             // 
+            // rbRefundSuppressPasswordYes
+            // 
+            this.rbRefundSuppressPasswordYes.AutoSize = true;
+            this.rbRefundSuppressPasswordYes.Depth = 0;
+            this.rbRefundSuppressPasswordYes.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.rbRefundSuppressPasswordYes.Location = new System.Drawing.Point(70, 98);
+            this.rbRefundSuppressPasswordYes.Margin = new System.Windows.Forms.Padding(0);
+            this.rbRefundSuppressPasswordYes.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.rbRefundSuppressPasswordYes.MouseState = MaterialSkin.MouseState.HOVER;
+            this.rbRefundSuppressPasswordYes.Name = "rbRefundSuppressPasswordYes";
+            this.rbRefundSuppressPasswordYes.Ripple = true;
+            this.rbRefundSuppressPasswordYes.Size = new System.Drawing.Size(52, 30);
+            this.rbRefundSuppressPasswordYes.TabIndex = 20;
+            this.rbRefundSuppressPasswordYes.Text = "Yes";
+            this.rbRefundSuppressPasswordYes.UseVisualStyleBackColor = true;
+            // 
+            // rbRefundSuppressPasswordNo
+            // 
+            this.rbRefundSuppressPasswordNo.AutoSize = true;
+            this.rbRefundSuppressPasswordNo.Checked = true;
+            this.rbRefundSuppressPasswordNo.Depth = 0;
+            this.rbRefundSuppressPasswordNo.Font = new System.Drawing.Font("Roboto", 10F);
+            this.rbRefundSuppressPasswordNo.Location = new System.Drawing.Point(1, 98);
+            this.rbRefundSuppressPasswordNo.Margin = new System.Windows.Forms.Padding(0);
+            this.rbRefundSuppressPasswordNo.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.rbRefundSuppressPasswordNo.MouseState = MaterialSkin.MouseState.HOVER;
+            this.rbRefundSuppressPasswordNo.Name = "rbRefundSuppressPasswordNo";
+            this.rbRefundSuppressPasswordNo.Ripple = true;
+            this.rbRefundSuppressPasswordNo.Size = new System.Drawing.Size(47, 30);
+            this.rbRefundSuppressPasswordNo.TabIndex = 19;
+            this.rbRefundSuppressPasswordNo.Text = "No";
+            this.rbRefundSuppressPasswordNo.UseVisualStyleBackColor = true;
+            // 
+            // materialLabel10
+            // 
+            this.materialLabel10.AutoSize = true;
+            this.materialLabel10.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel10.Depth = 0;
+            this.materialLabel10.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel10.Location = new System.Drawing.Point(3, 75);
+            this.materialLabel10.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel10.Name = "materialLabel10";
+            this.materialLabel10.Size = new System.Drawing.Size(215, 19);
+            this.materialLabel10.TabIndex = 18;
+            this.materialLabel10.Text = "Suppress Merchant Password?";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -622,6 +675,9 @@ namespace spice_sample_pos
         private MaterialSkin.Controls.MaterialRadioButton rbSuppressPasswordYes;
         private MaterialSkin.Controls.MaterialRadioButton rbSuppressPasswordNo;
         private MaterialSkin.Controls.MaterialLabel materialLabel9;
+        private MaterialSkin.Controls.MaterialRadioButton rbRefundSuppressPasswordYes;
+        private MaterialSkin.Controls.MaterialRadioButton rbRefundSuppressPasswordNo;
+        private MaterialSkin.Controls.MaterialLabel materialLabel10;
     }
 }
 

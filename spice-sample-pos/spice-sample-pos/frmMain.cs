@@ -72,12 +72,13 @@ namespace spice_sample_pos
             txtSurcharge.Text = moneyDefault;
             txtTip.Text = moneyDefault;
             rbCashoutNo.Checked = true;
+            rbRefundSuppressPasswordNo.Checked = true;
             txtMotoPurchase.Text = moneyDefault;
             txtMotoSurcharge.Text = moneyDefault;
             btnAction.Text = buttonText;
         }
 
-        private async void btnAction_Click(object sender, EventArgs e)
+        private void btnAction_Click(object sender, EventArgs e)
         {
             switch (btnAction.Text)
             {
@@ -116,7 +117,7 @@ namespace spice_sample_pos
 
                     if (refundParsed)
                     {
-                        var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmount, PosName, PosVersion);
+                        var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmount, rbRefundSuppressPasswordYes.Checked, PosName, PosVersion);
                         DisplayResult(response);
                     }
 
