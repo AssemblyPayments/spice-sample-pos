@@ -44,7 +44,6 @@ namespace spice_sample_pos
             this.txtRefund = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.SettlementEnquiry = new System.Windows.Forms.TabPage();
-            this.PayAtTable = new System.Windows.Forms.TabPage();
             this.tsMain = new MaterialSkin.Controls.MaterialTabSelector();
             this.btnAction = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblReceipt = new MaterialSkin.Controls.MaterialLabel();
@@ -87,7 +86,6 @@ namespace spice_sample_pos
             this.tcMain.Controls.Add(this.MOTO);
             this.tcMain.Controls.Add(this.Refund);
             this.tcMain.Controls.Add(this.SettlementEnquiry);
-            this.tcMain.Controls.Add(this.PayAtTable);
             this.tcMain.Depth = 0;
             this.tcMain.Location = new System.Drawing.Point(470, 116);
             this.tcMain.MouseState = MaterialSkin.MouseState.HOVER;
@@ -262,7 +260,7 @@ namespace spice_sample_pos
             this.Refund.Location = new System.Drawing.Point(4, 22);
             this.Refund.Name = "Refund";
             this.Refund.Padding = new System.Windows.Forms.Padding(3);
-            this.Refund.Size = new System.Drawing.Size(508, 316);
+            this.Refund.Size = new System.Drawing.Size(605, 316);
             this.Refund.TabIndex = 1;
             this.Refund.Text = "Refund";
             // 
@@ -303,19 +301,10 @@ namespace spice_sample_pos
             this.SettlementEnquiry.Location = new System.Drawing.Point(4, 22);
             this.SettlementEnquiry.Name = "SettlementEnquiry";
             this.SettlementEnquiry.Padding = new System.Windows.Forms.Padding(3);
-            this.SettlementEnquiry.Size = new System.Drawing.Size(508, 316);
+            this.SettlementEnquiry.Size = new System.Drawing.Size(605, 316);
             this.SettlementEnquiry.TabIndex = 2;
             this.SettlementEnquiry.Text = "Settlement Enquiry";
             this.SettlementEnquiry.UseVisualStyleBackColor = true;
-            // 
-            // PayAtTable
-            // 
-            this.PayAtTable.Location = new System.Drawing.Point(4, 22);
-            this.PayAtTable.Name = "PayAtTable";
-            this.PayAtTable.Size = new System.Drawing.Size(508, 316);
-            this.PayAtTable.TabIndex = 3;
-            this.PayAtTable.Text = "Pay at Table";
-            this.PayAtTable.UseVisualStyleBackColor = true;
             // 
             // tsMain
             // 
@@ -619,7 +608,6 @@ namespace spice_sample_pos
         private MaterialSkin.Controls.MaterialSingleLineTextField txtTip;
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
         private System.Windows.Forms.TabPage SettlementEnquiry;
-        private System.Windows.Forms.TabPage PayAtTable;
         private MaterialSkin.Controls.MaterialSingleLineTextField txtSurcharge;
         private MaterialSkin.Controls.MaterialLabel materialLabel5;
         private MaterialSkin.Controls.MaterialRadioButton rbCashoutNo;
