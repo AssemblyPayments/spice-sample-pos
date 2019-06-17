@@ -49,6 +49,37 @@ namespace spice_sample_pos.Helpers
             }
         }
 
+        public static string Moto(string posRefId, int purchaseAmountCents, int surchargeAmountCents,
+            bool suppressMerchantPassword, string headerPosName, string headerPosVersion)
+        {
+            var motoRequest = new MotoRequest
+            {
+                PosRefId = posRefId,
+                PurchaseAmountCents = purchaseAmountCents,
+                SurchargeAmountCents = surchargeAmountCents,
+                SuppressMerchantPassword = suppressMerchantPassword
+            };
+
+            try
+            {
+                var response = "http://localhost:8282/v1"
+                    .AppendPathSegment("moto")
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
+                    .PostJsonAsync(motoRequest).ConfigureAwait(false);
+
+                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+            }
+            catch (FlurlHttpTimeoutException ex)
+            {
+                return ex.Message;
+            }
+            catch (FlurlHttpException ex)
+            {
+                return ex.Message;
+            }
+        }
+
         public static string Refund(string posRefId, int refundAmountCents, string headerPosName, string headerPosVersion)
         {
             var refundRequest = new RefundRequest

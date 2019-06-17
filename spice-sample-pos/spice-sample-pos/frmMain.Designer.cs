@@ -54,11 +54,21 @@ namespace spice_sample_pos
             this.materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
             this.rbCashoutNo = new MaterialSkin.Controls.MaterialRadioButton();
             this.rbCashoutYes = new MaterialSkin.Controls.MaterialRadioButton();
+            this.MOTO = new System.Windows.Forms.TabPage();
+            this.txtMotoSurcharge = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel7 = new MaterialSkin.Controls.MaterialLabel();
+            this.txtMotoPurchase = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel8 = new MaterialSkin.Controls.MaterialLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.rbSuppressPasswordYes = new MaterialSkin.Controls.MaterialRadioButton();
+            this.rbSuppressPasswordNo = new MaterialSkin.Controls.MaterialRadioButton();
+            this.materialLabel9 = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tcMain.SuspendLayout();
             this.Purchase.SuspendLayout();
             this.Refund.SuspendLayout();
             this.pnlResult.SuspendLayout();
+            this.MOTO.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -74,6 +84,7 @@ namespace spice_sample_pos
             // tcMain
             // 
             this.tcMain.Controls.Add(this.Purchase);
+            this.tcMain.Controls.Add(this.MOTO);
             this.tcMain.Controls.Add(this.Refund);
             this.tcMain.Controls.Add(this.SettlementEnquiry);
             this.tcMain.Controls.Add(this.PayAtTable);
@@ -82,7 +93,7 @@ namespace spice_sample_pos
             this.tcMain.MouseState = MaterialSkin.MouseState.HOVER;
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(516, 342);
+            this.tcMain.Size = new System.Drawing.Size(613, 342);
             this.tcMain.TabIndex = 5;
             this.tcMain.SelectedIndexChanged += new System.EventHandler(this.tsMain_SelectedIndexChanged);
             // 
@@ -104,7 +115,7 @@ namespace spice_sample_pos
             this.Purchase.Location = new System.Drawing.Point(4, 22);
             this.Purchase.Name = "Purchase";
             this.Purchase.Padding = new System.Windows.Forms.Padding(3);
-            this.Purchase.Size = new System.Drawing.Size(508, 316);
+            this.Purchase.Size = new System.Drawing.Size(605, 316);
             this.Purchase.TabIndex = 0;
             this.Purchase.Text = "Purchase";
             // 
@@ -313,7 +324,7 @@ namespace spice_sample_pos
             this.tsMain.Location = new System.Drawing.Point(470, 87);
             this.tsMain.MouseState = MaterialSkin.MouseState.HOVER;
             this.tsMain.Name = "tsMain";
-            this.tsMain.Size = new System.Drawing.Size(516, 23);
+            this.tsMain.Size = new System.Drawing.Size(613, 23);
             this.tsMain.TabIndex = 6;
             this.tsMain.Text = "tsMain";
             // 
@@ -323,7 +334,7 @@ namespace spice_sample_pos
             this.btnAction.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnAction.Depth = 0;
             this.btnAction.Icon = null;
-            this.btnAction.Location = new System.Drawing.Point(895, 464);
+            this.btnAction.Location = new System.Drawing.Point(992, 464);
             this.btnAction.MaximumSize = new System.Drawing.Size(91, 36);
             this.btnAction.MinimumSize = new System.Drawing.Size(91, 36);
             this.btnAction.MouseState = MaterialSkin.MouseState.HOVER;
@@ -419,11 +430,148 @@ namespace spice_sample_pos
             this.rbCashoutYes.Text = "Yes";
             this.rbCashoutYes.UseVisualStyleBackColor = true;
             // 
+            // MOTO
+            // 
+            this.MOTO.BackColor = System.Drawing.SystemColors.Control;
+            this.MOTO.Controls.Add(this.rbSuppressPasswordYes);
+            this.MOTO.Controls.Add(this.rbSuppressPasswordNo);
+            this.MOTO.Controls.Add(this.materialLabel9);
+            this.MOTO.Controls.Add(this.txtMotoSurcharge);
+            this.MOTO.Controls.Add(this.materialLabel7);
+            this.MOTO.Controls.Add(this.txtMotoPurchase);
+            this.MOTO.Controls.Add(this.materialLabel8);
+            this.MOTO.Location = new System.Drawing.Point(4, 22);
+            this.MOTO.Name = "MOTO";
+            this.MOTO.Size = new System.Drawing.Size(605, 316);
+            this.MOTO.TabIndex = 4;
+            this.MOTO.Text = "MOTO";
+            // 
+            // txtMotoSurcharge
+            // 
+            this.txtMotoSurcharge.Depth = 0;
+            this.txtMotoSurcharge.Hint = "";
+            this.txtMotoSurcharge.Location = new System.Drawing.Point(6, 95);
+            this.txtMotoSurcharge.MaxLength = 32767;
+            this.txtMotoSurcharge.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtMotoSurcharge.Name = "txtMotoSurcharge";
+            this.txtMotoSurcharge.PasswordChar = '\0';
+            this.txtMotoSurcharge.SelectedText = "";
+            this.txtMotoSurcharge.SelectionLength = 0;
+            this.txtMotoSurcharge.SelectionStart = 0;
+            this.txtMotoSurcharge.Size = new System.Drawing.Size(348, 23);
+            this.txtMotoSurcharge.TabIndex = 14;
+            this.txtMotoSurcharge.TabStop = false;
+            this.txtMotoSurcharge.Text = "0";
+            this.txtMotoSurcharge.UseSystemPasswordChar = false;
+            // 
+            // materialLabel7
+            // 
+            this.materialLabel7.AutoSize = true;
+            this.materialLabel7.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel7.Depth = 0;
+            this.materialLabel7.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel7.Location = new System.Drawing.Point(3, 73);
+            this.materialLabel7.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel7.Name = "materialLabel7";
+            this.materialLabel7.Size = new System.Drawing.Size(184, 19);
+            this.materialLabel7.TabIndex = 13;
+            this.materialLabel7.Text = "Surcharge Amount - Cents";
+            // 
+            // txtMotoPurchase
+            // 
+            this.txtMotoPurchase.Depth = 0;
+            this.txtMotoPurchase.Hint = "";
+            this.txtMotoPurchase.Location = new System.Drawing.Point(6, 37);
+            this.txtMotoPurchase.MaxLength = 32767;
+            this.txtMotoPurchase.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtMotoPurchase.Name = "txtMotoPurchase";
+            this.txtMotoPurchase.PasswordChar = '\0';
+            this.txtMotoPurchase.SelectedText = "";
+            this.txtMotoPurchase.SelectionLength = 0;
+            this.txtMotoPurchase.SelectionStart = 0;
+            this.txtMotoPurchase.Size = new System.Drawing.Size(348, 23);
+            this.txtMotoPurchase.TabIndex = 12;
+            this.txtMotoPurchase.TabStop = false;
+            this.txtMotoPurchase.Text = "0";
+            this.txtMotoPurchase.UseSystemPasswordChar = false;
+            // 
+            // materialLabel8
+            // 
+            this.materialLabel8.AutoSize = true;
+            this.materialLabel8.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel8.Depth = 0;
+            this.materialLabel8.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel8.Location = new System.Drawing.Point(3, 15);
+            this.materialLabel8.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel8.Name = "materialLabel8";
+            this.materialLabel8.Size = new System.Drawing.Size(183, 19);
+            this.materialLabel8.TabIndex = 11;
+            this.materialLabel8.Text = "Purchase Amount - Cents:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 507);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(160, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Powered By Assembly Payments";
+            // 
+            // rbSuppressPasswordYes
+            // 
+            this.rbSuppressPasswordYes.AutoSize = true;
+            this.rbSuppressPasswordYes.Depth = 0;
+            this.rbSuppressPasswordYes.Font = new System.Drawing.Font("Roboto", 10F);
+            this.rbSuppressPasswordYes.Location = new System.Drawing.Point(70, 154);
+            this.rbSuppressPasswordYes.Margin = new System.Windows.Forms.Padding(0);
+            this.rbSuppressPasswordYes.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.rbSuppressPasswordYes.MouseState = MaterialSkin.MouseState.HOVER;
+            this.rbSuppressPasswordYes.Name = "rbSuppressPasswordYes";
+            this.rbSuppressPasswordYes.Ripple = true;
+            this.rbSuppressPasswordYes.Size = new System.Drawing.Size(52, 30);
+            this.rbSuppressPasswordYes.TabIndex = 17;
+            this.rbSuppressPasswordYes.Text = "Yes";
+            this.rbSuppressPasswordYes.UseVisualStyleBackColor = true;
+            // 
+            // rbSuppressPasswordNo
+            // 
+            this.rbSuppressPasswordNo.AutoSize = true;
+            this.rbSuppressPasswordNo.Checked = true;
+            this.rbSuppressPasswordNo.Depth = 0;
+            this.rbSuppressPasswordNo.Font = new System.Drawing.Font("Roboto", 10F);
+            this.rbSuppressPasswordNo.Location = new System.Drawing.Point(1, 154);
+            this.rbSuppressPasswordNo.Margin = new System.Windows.Forms.Padding(0);
+            this.rbSuppressPasswordNo.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.rbSuppressPasswordNo.MouseState = MaterialSkin.MouseState.HOVER;
+            this.rbSuppressPasswordNo.Name = "rbSuppressPasswordNo";
+            this.rbSuppressPasswordNo.Ripple = true;
+            this.rbSuppressPasswordNo.Size = new System.Drawing.Size(47, 30);
+            this.rbSuppressPasswordNo.TabIndex = 16;
+            this.rbSuppressPasswordNo.Text = "No";
+            this.rbSuppressPasswordNo.UseVisualStyleBackColor = true;
+            // 
+            // materialLabel9
+            // 
+            this.materialLabel9.AutoSize = true;
+            this.materialLabel9.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel9.Depth = 0;
+            this.materialLabel9.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel9.Location = new System.Drawing.Point(3, 131);
+            this.materialLabel9.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel9.Name = "materialLabel9";
+            this.materialLabel9.Size = new System.Drawing.Size(215, 19);
+            this.materialLabel9.TabIndex = 15;
+            this.materialLabel9.Text = "Suppress Merchant Password?";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1010, 531);
+            this.ClientSize = new System.Drawing.Size(1109, 527);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.lblReceipt);
             this.Controls.Add(this.btnAction);
             this.Controls.Add(this.tsMain);
@@ -443,6 +591,8 @@ namespace spice_sample_pos
             this.Refund.PerformLayout();
             this.pnlResult.ResumeLayout(false);
             this.pnlResult.PerformLayout();
+            this.MOTO.ResumeLayout(false);
+            this.MOTO.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -475,6 +625,15 @@ namespace spice_sample_pos
         private MaterialSkin.Controls.MaterialRadioButton rbCashoutNo;
         private MaterialSkin.Controls.MaterialLabel materialLabel6;
         private MaterialSkin.Controls.MaterialRadioButton rbCashoutYes;
+        private System.Windows.Forms.TabPage MOTO;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtMotoSurcharge;
+        private MaterialSkin.Controls.MaterialLabel materialLabel7;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtMotoPurchase;
+        private MaterialSkin.Controls.MaterialLabel materialLabel8;
+        private System.Windows.Forms.Label label1;
+        private MaterialSkin.Controls.MaterialRadioButton rbSuppressPasswordYes;
+        private MaterialSkin.Controls.MaterialRadioButton rbSuppressPasswordNo;
+        private MaterialSkin.Controls.MaterialLabel materialLabel9;
     }
 }
 

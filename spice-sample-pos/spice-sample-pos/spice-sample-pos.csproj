@@ -67,6 +67,7 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\MotoRequest.cs" />
     <Compile Include="Models\PurchaseRequest.cs" />
     <Compile Include="Helpers\SpiceApiLib.cs" />
     <Compile Include="Models\RefundRequest.cs" />

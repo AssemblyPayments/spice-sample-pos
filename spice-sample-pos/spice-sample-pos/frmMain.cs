@@ -49,6 +49,9 @@ namespace spice_sample_pos
                 case "Purchase":
                     buttonText = "Purchase";
                     break;
+                case "MOTO":
+                    buttonText = "MOTO";
+                    break;
                 case "Refund":
                     buttonText = "Refund";
                     break;
@@ -69,6 +72,8 @@ namespace spice_sample_pos
             txtSurcharge.Text = moneyDefault;
             txtTip.Text = moneyDefault;
             rbCashoutNo.Checked = true;
+            txtMotoPurchase.Text = moneyDefault;
+            txtMotoSurcharge.Text = moneyDefault;
             btnAction.Text = buttonText;
         }
 
@@ -87,6 +92,19 @@ namespace spice_sample_pos
                     if (purchaseParsed && cashoutParsed && tipParsed && surchargeParsed)
                     {
                         var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmount, tipAmount, cashoutAmount, rbCashoutYes.Checked, surchargeAmount, PosName, PosVersion);
+                        DisplayResult(response);
+                    }
+
+                    break;
+                case "MOTO":
+                    bool motoPurchaseParsed, motoSurchargeParsed;
+
+                    motoPurchaseParsed = int.TryParse(txtMotoPurchase.Text, NumberStyles.Currency, this._cultureInfo, out var motoPurchaseAmount);
+                    motoSurchargeParsed = int.TryParse(txtMotoSurcharge.Text, NumberStyles.Currency, this._cultureInfo, out var motoSurchargeAmount);
+
+                    if (motoPurchaseParsed && motoSurchargeParsed)
+                    {
+                        var response = SpiceApiLib.Moto(PosRefIdHelper(), motoPurchaseAmount, motoSurchargeAmount, rbSuppressPasswordYes.Checked, PosName, PosVersion);
                         DisplayResult(response);
                     }
 
