@@ -26,7 +26,7 @@ namespace spice_sample_pos.Helpers
                 TipAmountCents = tipAmountCents,
                 CashOutAmountCents = cashoutAmountCents,
                 PromptForCashout = promptForCashout,
-                SurchageAmountCents = surchargeAmountCents
+                SurchargeAmountCents = surchargeAmountCents
             };
 
             try

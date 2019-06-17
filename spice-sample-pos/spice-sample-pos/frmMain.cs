@@ -66,6 +66,9 @@ namespace spice_sample_pos
             txtPurchase.Text = moneyDefault;
             txtCashout.Text = moneyDefault;
             txtRefund.Text = moneyDefault;
+            txtSurcharge.Text = moneyDefault;
+            txtTip.Text = moneyDefault;
+            rbCashoutNo.Checked = true;
             btnAction.Text = buttonText;
         }
 
@@ -74,15 +77,16 @@ namespace spice_sample_pos
             switch (btnAction.Text)
             {
                 case "Purchase":
-                    bool purchaseParsed, cashoutParsed, tipParsed;
+                    bool purchaseParsed, cashoutParsed, tipParsed, surchargeParsed;
 
                     purchaseParsed = int.TryParse(txtPurchase.Text, NumberStyles.Currency, this._cultureInfo, out var purchaseAmount);
                     cashoutParsed = int.TryParse(txtCashout.Text, NumberStyles.Currency, this._cultureInfo, out var cashoutAmount);
                     tipParsed = int.TryParse(txtTip.Text, NumberStyles.Currency, this._cultureInfo, out var tipAmount);
+                    surchargeParsed = int.TryParse(txtSurcharge.Text, NumberStyles.Currency, this._cultureInfo, out var surchargeAmount);
 
-                    if (purchaseParsed && cashoutParsed && tipParsed)
+                    if (purchaseParsed && cashoutParsed && tipParsed && surchargeParsed)
                     {
-                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmount, tipAmount, cashoutAmount, false, 0, PosName, PosVersion);
+                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmount, tipAmount, cashoutAmount, rbCashoutYes.Checked, surchargeAmount, PosName, PosVersion);
                         DisplayResult(response);
                     }
 

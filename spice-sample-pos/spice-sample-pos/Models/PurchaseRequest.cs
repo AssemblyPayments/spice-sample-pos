@@ -19,7 +19,7 @@ namespace spice_sample_pos.Models
         [JsonProperty(PropertyName = "promptForCashout")]
         public bool PromptForCashout { get; set; }
 
-        [JsonProperty(PropertyName = "surchageAmount")]
-        public int SurchageAmountCents { get; set; }
+        [JsonProperty(PropertyName = "surchargeAmount")]
+        public int SurchargeAmountCents { get; set; }
     }
 }

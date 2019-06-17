@@ -31,6 +31,8 @@ namespace spice_sample_pos
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tcMain = new MaterialSkin.Controls.MaterialTabControl();
             this.Purchase = new System.Windows.Forms.TabPage();
+            this.txtSurcharge = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
             this.txtTip = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.txtCashout = new MaterialSkin.Controls.MaterialSingleLineTextField();
@@ -49,6 +51,9 @@ namespace spice_sample_pos
             this.pnlResult = new System.Windows.Forms.FlowLayoutPanel();
             this.lblResult = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
+            this.rbCashoutNo = new MaterialSkin.Controls.MaterialRadioButton();
+            this.rbCashoutYes = new MaterialSkin.Controls.MaterialRadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tcMain.SuspendLayout();
             this.Purchase.SuspendLayout();
@@ -61,7 +66,7 @@ namespace spice_sample_pos
             this.pictureBox1.Image = global::spice_sample_pos.Properties.Resources.logo;
             this.pictureBox1.Location = new System.Drawing.Point(23, 87);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(418, 389);
+            this.pictureBox1.Size = new System.Drawing.Size(418, 413);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
@@ -77,13 +82,18 @@ namespace spice_sample_pos
             this.tcMain.MouseState = MaterialSkin.MouseState.HOVER;
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(516, 308);
+            this.tcMain.Size = new System.Drawing.Size(516, 342);
             this.tcMain.TabIndex = 5;
             this.tcMain.SelectedIndexChanged += new System.EventHandler(this.tsMain_SelectedIndexChanged);
             // 
             // Purchase
             // 
             this.Purchase.BackColor = System.Drawing.SystemColors.Control;
+            this.Purchase.Controls.Add(this.rbCashoutYes);
+            this.Purchase.Controls.Add(this.rbCashoutNo);
+            this.Purchase.Controls.Add(this.materialLabel6);
+            this.Purchase.Controls.Add(this.txtSurcharge);
+            this.Purchase.Controls.Add(this.materialLabel5);
             this.Purchase.Controls.Add(this.txtTip);
             this.Purchase.Controls.Add(this.materialLabel4);
             this.Purchase.Controls.Add(this.txtCashout);
@@ -94,9 +104,41 @@ namespace spice_sample_pos
             this.Purchase.Location = new System.Drawing.Point(4, 22);
             this.Purchase.Name = "Purchase";
             this.Purchase.Padding = new System.Windows.Forms.Padding(3);
-            this.Purchase.Size = new System.Drawing.Size(508, 282);
+            this.Purchase.Size = new System.Drawing.Size(508, 316);
             this.Purchase.TabIndex = 0;
             this.Purchase.Text = "Purchase";
+            // 
+            // txtSurcharge
+            // 
+            this.txtSurcharge.Depth = 0;
+            this.txtSurcharge.Hint = "";
+            this.txtSurcharge.Location = new System.Drawing.Point(5, 215);
+            this.txtSurcharge.MaxLength = 32767;
+            this.txtSurcharge.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtSurcharge.Name = "txtSurcharge";
+            this.txtSurcharge.PasswordChar = '\0';
+            this.txtSurcharge.SelectedText = "";
+            this.txtSurcharge.SelectionLength = 0;
+            this.txtSurcharge.SelectionStart = 0;
+            this.txtSurcharge.Size = new System.Drawing.Size(348, 23);
+            this.txtSurcharge.TabIndex = 10;
+            this.txtSurcharge.TabStop = false;
+            this.txtSurcharge.Text = "0";
+            this.txtSurcharge.UseSystemPasswordChar = false;
+            // 
+            // materialLabel5
+            // 
+            this.materialLabel5.AutoSize = true;
+            this.materialLabel5.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel5.Depth = 0;
+            this.materialLabel5.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel5.Location = new System.Drawing.Point(2, 193);
+            this.materialLabel5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel5.Name = "materialLabel5";
+            this.materialLabel5.Size = new System.Drawing.Size(184, 19);
+            this.materialLabel5.TabIndex = 9;
+            this.materialLabel5.Text = "Surcharge Amount - Cents";
             // 
             // txtTip
             // 
@@ -209,7 +251,7 @@ namespace spice_sample_pos
             this.Refund.Location = new System.Drawing.Point(4, 22);
             this.Refund.Name = "Refund";
             this.Refund.Padding = new System.Windows.Forms.Padding(3);
-            this.Refund.Size = new System.Drawing.Size(508, 282);
+            this.Refund.Size = new System.Drawing.Size(508, 316);
             this.Refund.TabIndex = 1;
             this.Refund.Text = "Refund";
             // 
@@ -250,7 +292,7 @@ namespace spice_sample_pos
             this.SettlementEnquiry.Location = new System.Drawing.Point(4, 22);
             this.SettlementEnquiry.Name = "SettlementEnquiry";
             this.SettlementEnquiry.Padding = new System.Windows.Forms.Padding(3);
-            this.SettlementEnquiry.Size = new System.Drawing.Size(508, 282);
+            this.SettlementEnquiry.Size = new System.Drawing.Size(508, 316);
             this.SettlementEnquiry.TabIndex = 2;
             this.SettlementEnquiry.Text = "Settlement Enquiry";
             this.SettlementEnquiry.UseVisualStyleBackColor = true;
@@ -259,7 +301,7 @@ namespace spice_sample_pos
             // 
             this.PayAtTable.Location = new System.Drawing.Point(4, 22);
             this.PayAtTable.Name = "PayAtTable";
-            this.PayAtTable.Size = new System.Drawing.Size(508, 282);
+            this.PayAtTable.Size = new System.Drawing.Size(508, 316);
             this.PayAtTable.TabIndex = 3;
             this.PayAtTable.Text = "Pay at Table";
             this.PayAtTable.UseVisualStyleBackColor = true;
@@ -281,7 +323,7 @@ namespace spice_sample_pos
             this.btnAction.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnAction.Depth = 0;
             this.btnAction.Icon = null;
-            this.btnAction.Location = new System.Drawing.Point(895, 440);
+            this.btnAction.Location = new System.Drawing.Point(895, 464);
             this.btnAction.MaximumSize = new System.Drawing.Size(91, 36);
             this.btnAction.MinimumSize = new System.Drawing.Size(91, 36);
             this.btnAction.MouseState = MaterialSkin.MouseState.HOVER;
@@ -330,11 +372,58 @@ namespace spice_sample_pos
             this.panel2.Size = new System.Drawing.Size(200, 100);
             this.panel2.TabIndex = 1;
             // 
+            // materialLabel6
+            // 
+            this.materialLabel6.AutoSize = true;
+            this.materialLabel6.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel6.Depth = 0;
+            this.materialLabel6.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel6.Location = new System.Drawing.Point(1, 253);
+            this.materialLabel6.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel6.Name = "materialLabel6";
+            this.materialLabel6.Size = new System.Drawing.Size(72, 19);
+            this.materialLabel6.TabIndex = 11;
+            this.materialLabel6.Text = "Cashout?";
+            // 
+            // rbCashoutNo
+            // 
+            this.rbCashoutNo.AutoSize = true;
+            this.rbCashoutNo.Checked = true;
+            this.rbCashoutNo.Depth = 0;
+            this.rbCashoutNo.Font = new System.Drawing.Font("Roboto", 10F);
+            this.rbCashoutNo.Location = new System.Drawing.Point(-1, 276);
+            this.rbCashoutNo.Margin = new System.Windows.Forms.Padding(0);
+            this.rbCashoutNo.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.rbCashoutNo.MouseState = MaterialSkin.MouseState.HOVER;
+            this.rbCashoutNo.Name = "rbCashoutNo";
+            this.rbCashoutNo.Ripple = true;
+            this.rbCashoutNo.Size = new System.Drawing.Size(47, 30);
+            this.rbCashoutNo.TabIndex = 12;
+            this.rbCashoutNo.Text = "No";
+            this.rbCashoutNo.UseVisualStyleBackColor = true;
+            // 
+            // rbCashoutYes
+            // 
+            this.rbCashoutYes.AutoSize = true;
+            this.rbCashoutYes.Depth = 0;
+            this.rbCashoutYes.Font = new System.Drawing.Font("Roboto", 10F);
+            this.rbCashoutYes.Location = new System.Drawing.Point(68, 276);
+            this.rbCashoutYes.Margin = new System.Windows.Forms.Padding(0);
+            this.rbCashoutYes.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.rbCashoutYes.MouseState = MaterialSkin.MouseState.HOVER;
+            this.rbCashoutYes.Name = "rbCashoutYes";
+            this.rbCashoutYes.Ripple = true;
+            this.rbCashoutYes.Size = new System.Drawing.Size(52, 30);
+            this.rbCashoutYes.TabIndex = 13;
+            this.rbCashoutYes.Text = "Yes";
+            this.rbCashoutYes.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1009, 486);
+            this.ClientSize = new System.Drawing.Size(1010, 531);
             this.Controls.Add(this.lblReceipt);
             this.Controls.Add(this.btnAction);
             this.Controls.Add(this.tsMain);
@@ -381,6 +470,11 @@ namespace spice_sample_pos
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
         private System.Windows.Forms.TabPage SettlementEnquiry;
         private System.Windows.Forms.TabPage PayAtTable;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtSurcharge;
+        private MaterialSkin.Controls.MaterialLabel materialLabel5;
+        private MaterialSkin.Controls.MaterialRadioButton rbCashoutNo;
+        private MaterialSkin.Controls.MaterialLabel materialLabel6;
+        private MaterialSkin.Controls.MaterialRadioButton rbCashoutYes;
     }
 }
 
