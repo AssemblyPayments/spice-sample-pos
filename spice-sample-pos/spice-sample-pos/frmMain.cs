@@ -1,11 +1,14 @@
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Windows.Forms;
 using spice_sample_pos.Helpers;
+using spice_sample_pos.Models;
 
 namespace spice_sample_pos
 {
@@ -13,7 +16,9 @@ namespace spice_sample_pos
     {
         private readonly CultureInfo _cultureInfo = new CultureInfo("en-Au");
         private const string PosName = "HabaneroPos";
-        private readonly string PosVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
+        private readonly string _posVersion = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
+        private readonly Timer _timer = new Timer();
+        private readonly BackgroundWorker _worker = new BackgroundWorker();
 
         public frmMain()
         {
@@ -30,11 +35,41 @@ namespace spice_sample_pos
                 Primary.Blue500, Accent.LightBlue200,
                 TextShade.WHITE
             );
+
+            // start timer for ping
+            _timer.Tick += timer_Tick;
+            _timer.Interval = 5000;
+            _timer.Enabled = true;
+            _worker.DoWork += worker_DoWork;
+            // let's invoke it straight away
+            UpdatePing();
         }
+
+        private void worker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            if (InvokeRequired) // use background worker, this might cause race conditions
+            {
+                Invoke(new Action(UpdatePing));
+            }
+        }
+        
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            _worker.RunWorkerAsync();
+        }
+
 
         private void tsMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResetControls();
+        }
+
+        private void UpdatePing()
+        {
+            var response = SpiceApiLib.Ping(PosName, _posVersion);
+            dynamic parse = JsonConvert.DeserializeObject(response);
+
+            lblPingStatus.Text = ($@"Version: {parse.version}     Status: {parse.status}     Flow: {parse.flow}     Last Pong: {parse.pong}");
         }
 
         private void ResetControls()
@@ -92,7 +127,7 @@ namespace spice_sample_pos
 
                     if (purchaseParsed && cashoutParsed && tipParsed && surchargeParsed)
                     {
-                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmount, tipAmount, cashoutAmount, rbCashoutYes.Checked, surchargeAmount, PosName, PosVersion);
+                        var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmount, tipAmount, cashoutAmount, rbCashoutYes.Checked, surchargeAmount, PosName, _posVersion);
                         DisplayResult(response);
                     }
 
@@ -105,7 +140,7 @@ namespace spice_sample_pos
 
                     if (motoPurchaseParsed && motoSurchargeParsed)
                     {
-                        var response = SpiceApiLib.Moto(PosRefIdHelper(), motoPurchaseAmount, motoSurchargeAmount, rbSuppressPasswordYes.Checked, PosName, PosVersion);
+                        var response = SpiceApiLib.Moto(PosRefIdHelper(), motoPurchaseAmount, motoSurchargeAmount, rbSuppressPasswordYes.Checked, PosName, _posVersion);
                         DisplayResult(response);
                     }
 
@@ -117,18 +152,18 @@ namespace spice_sample_pos
 
                     if (refundParsed)
                     {
-                        var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmount, rbRefundSuppressPasswordYes.Checked, PosName, PosVersion);
+                        var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmount, rbRefundSuppressPasswordYes.Checked, PosName, _posVersion);
                         DisplayResult(response);
                     }
 
                     break;
                 case "Enquiry":
-                    var enquiry = SpiceApiLib.SettlementEnquiry(PosRefIdHelper(), PosName, PosVersion);
+                    var enquiry = SpiceApiLib.SettlementEnquiry(PosRefIdHelper(), PosName, _posVersion);
                     DisplayResult(enquiry);
 
                     break;
                 case "Pay at Table":
-                    var payAtTable = SpiceApiLib.PayAtTable(PosName, PosVersion);
+                    var payAtTable = SpiceApiLib.PayAtTable(PosName, _posVersion);
 
                     break;
                 case "OK":

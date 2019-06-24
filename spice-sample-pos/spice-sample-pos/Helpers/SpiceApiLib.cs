@@ -160,5 +160,27 @@ namespace spice_sample_pos.Helpers
             }
         }
 
+        public static string Ping(string headerPosName, string headerPosVersion)
+        {
+            try
+            {
+                var response = "http://localhost:8282/v1"
+                    .AppendPathSegment("ping")
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
+                    .GetAsync().ConfigureAwait(false);
+
+                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+            }
+            catch (FlurlHttpTimeoutException ex)
+            {
+                return ex.Message;
+            }
+            catch (FlurlHttpException ex)
+            {
+                return ex.Message;
+            }
+        }
+
     }
 }
