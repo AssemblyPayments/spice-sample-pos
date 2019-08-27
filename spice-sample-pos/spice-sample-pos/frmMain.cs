@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Net;
 using System.Reflection;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -8,7 +9,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Windows.Forms;
 using spice_sample_pos.Helpers;
-using spice_sample_pos.Models;
 
 namespace spice_sample_pos
 {
@@ -19,6 +19,7 @@ namespace spice_sample_pos
         private readonly string _posVersion = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
         private readonly Timer _timer = new Timer();
         private readonly BackgroundWorker _worker = new BackgroundWorker();
+        private static readonly Properties.Settings Settings = Properties.Settings.Default;
 
         public frmMain()
         {
@@ -36,40 +37,13 @@ namespace spice_sample_pos
                 TextShade.WHITE
             );
 
-            // start timer for ping
-            _timer.Tick += timer_Tick;
-            _timer.Interval = 5000;
-            _timer.Enabled = true;
-            _worker.DoWork += worker_DoWork;
-            // let's invoke it straight away
-            UpdatePing();
+            // invoke recovery
+            InvokeRecovery();
         }
-
-        private void worker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            if (InvokeRequired) // use background worker, this might cause race conditions
-            {
-                Invoke(new Action(UpdatePing));
-            }
-        }
-        
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            _worker.RunWorkerAsync();
-        }
-
 
         private void tsMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResetControls();
-        }
-
-        private void UpdatePing()
-        {
-            var response = SpiceApiLib.Ping(PosName, _posVersion);
-            dynamic parse = JsonConvert.DeserializeObject(response);
-
-            lblPingStatus.Text = ($@"Version: {parse.version}     Status: {parse.status}     Flow: {parse.flow}     Last Pong: {parse.pong}");
         }
 
         private void ResetControls()
@@ -115,6 +89,24 @@ namespace spice_sample_pos
 
         private void btnAction_Click(object sender, EventArgs e)
         {
+            // set transaction incomplete
+            Settings.TransactionComplete = false;
+            Settings.TransactionState = btnAction.Text;
+            Settings.Save();
+
+            if (string.Equals(btnAction.Text, "OK"))
+            {
+                lblResult.Text = string.Empty;
+                ResetControls();
+                return;
+            }
+
+            if (!IsPaired())
+            {
+                DisplayResultHelper("Please pair your adaptor");
+                return;
+            }
+
             switch (btnAction.Text)
             {
                 case "Purchase":
@@ -128,7 +120,16 @@ namespace spice_sample_pos
                     if (purchaseParsed && cashoutParsed && tipParsed && surchargeParsed)
                     {
                         var response = SpiceApiLib.Purchase(PosRefIdHelper(), purchaseAmount, tipAmount, cashoutAmount, rbCashoutYes.Checked, surchargeAmount, PosName, _posVersion);
-                        DisplayResult(response);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            DisplayResult(response.Content.ReadAsStringAsync().Result);
+                            IsSignatureRequired(response.Content.ReadAsStringAsync().Result);
+                        }
+                        else if (response.StatusCode == HttpStatusCode.RequestTimeout)
+                        {
+                            // Manual Override https://developer.assemblypayments.com/docs/manual-user-override
+                        }
                     }
 
                     break;
@@ -141,7 +142,11 @@ namespace spice_sample_pos
                     if (motoPurchaseParsed && motoSurchargeParsed)
                     {
                         var response = SpiceApiLib.Moto(PosRefIdHelper(), motoPurchaseAmount, motoSurchargeAmount, rbSuppressPasswordYes.Checked, PosName, _posVersion);
-                        DisplayResult(response);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            DisplayResult(response.Content.ReadAsStringAsync().Result);
+                        }
                     }
 
                     break;
@@ -153,62 +158,160 @@ namespace spice_sample_pos
                     if (refundParsed)
                     {
                         var response = SpiceApiLib.Refund(PosRefIdHelper(), refundAmount, rbRefundSuppressPasswordYes.Checked, PosName, _posVersion);
-                        DisplayResult(response);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            DisplayResult(response.Content.ReadAsStringAsync().Result);
+                        }
                     }
 
                     break;
                 case "Enquiry":
                     var enquiry = SpiceApiLib.SettlementEnquiry(PosRefIdHelper(), PosName, _posVersion);
-                    DisplayResult(enquiry);
+                    DisplayResult(enquiry.Content.ReadAsStringAsync().Result);
 
                     break;
                 case "Pay at Table":
-                    var payAtTable = SpiceApiLib.PayAtTable(PosName, _posVersion);
-
-                    break;
-                case "OK":
-                    lblResult.Text = string.Empty;
-                    ResetControls();
-
-                    break;
-                default:
                     break;
             }
+
+            Settings.TransactionComplete = true;
+            Settings.Save();
         }
 
+        private bool IsPaired()
+        {
+            var response = SpiceApiLib.Ping(PosName, _posVersion);
+
+            if (!response.IsSuccessStatusCode)
+                return false;
+
+            var result = (JObject)JsonConvert.DeserializeObject(response.Content?.ReadAsStringAsync().Result);
+            var paired = result.SelectToken("status");
+
+            return paired.ToString() == "PairedConnected";
+        }
+
+        /// <summary>
+        /// Recovery for when the PoS crashes
+        /// </summary>
+        private void InvokeRecovery()
+        {
+            var currentPosRefId = Settings.CurrentPosRefId;
+
+            // no need for recovery
+            if (Settings.TransactionComplete || currentPosRefId == "")
+                return;
+
+            // initiate recovery
+            switch (Settings.TransactionState)
+            {
+                case "MOTO":
+                    var motoRecovery = SpiceApiLib.Moto(currentPosRefId, PosName, _posVersion);
+
+                    if (motoRecovery.IsSuccessStatusCode)
+                    {
+                        DisplayResult(motoRecovery.Content.ReadAsStringAsync().Result);
+                    }
+
+                    break;
+                case "Purchase":
+                    var purchaseRecovery = SpiceApiLib.Purchase(currentPosRefId, PosName, _posVersion);
+
+                    if (purchaseRecovery.IsSuccessStatusCode)
+                    {
+                        DisplayResult(purchaseRecovery.Content.ReadAsStringAsync().Result);
+                    }
+
+                    break;
+                case "Refund":
+                    var refundRecovery = SpiceApiLib.Refund(currentPosRefId, PosName, _posVersion);
+
+                    if (refundRecovery.IsSuccessStatusCode)
+                    {
+                        DisplayResult(refundRecovery.Content.ReadAsStringAsync().Result);
+                    }
+
+                    break;
+            }
+
+            // transaction complete
+            Settings.TransactionComplete = true;
+            Settings.Save();
+        }
+
+
+        private void IsSignatureRequired(string data)
+        {
+            // https://developer.assemblypayments.com/docs/signature-transaction
+            var currentPosRefId = Settings.CurrentPosRefId;
+
+            // check if signature is required
+            var result = (JObject)JsonConvert.DeserializeObject(data); // need a better way
+            var value = result.GetValue("signatureRequired", StringComparison.OrdinalIgnoreCase);
+
+            if (value == null)
+                return;
+
+            // signature accept or decline, get result from Assembly Payments Adaptor
+            var response = SpiceApiLib.Purchase(currentPosRefId, PosName, _posVersion);
+
+            // customer receipt
+            DisplayResult(response.Content.ReadAsStringAsync().Result);
+
+            return;
+        }
+
+        // This needs to be refactored
         private void DisplayResult(string data)
         {
-            // temp error handling
             try
             {
-                var obj = JToken.Parse(data);
+                var result = (JObject)JsonConvert.DeserializeObject(data);
+
+                var error = result.GetValue("error", StringComparison.OrdinalIgnoreCase);
+                if (error != null)
+                {
+                    DisplayResultHelper(error.ToString());
+                    return;
+                }
+
+                var errorDetail = result.SelectToken("Response.error_detail");
+                if (errorDetail != null)
+                {
+                    DisplayResultHelper(errorDetail.ToString());
+                    return;
+                }
+
+                // customer receipt
+                var receipt = result.SelectToken("Response.customer_receipt");
+                if (receipt != null)
+                {
+                    DisplayResultHelper(receipt.ToString());
+                    return;
+                }
+
+                // merchant receipt - signature
+                var signatureRequired = result.SelectToken("signatureRequired.receiptToSign");
+                if (signatureRequired != null)
+                {
+                    DisplayResultHelper(signatureRequired.ToString());
+                    return;
+                }
+
+                // check to see if it is a user override
+                var userOverride = result.SelectToken("Response.user_override");
+                if (userOverride?.ToString().ToLower() == "true")
+                {
+                    var successful = result.SelectToken("Response.success").ToString().ToLower() == "true" ? "successful" : "unsuccessful";
+                    DisplayResultHelper($"Manual Eftpos - The transaction was {successful}");
+                    return;
+                }
             }
             catch
             {
                 DisplayResultHelper(data);
                 return;
-            }
-
-            var result = (JObject) JsonConvert.DeserializeObject(data);
-
-            var error = result.GetValue("error", StringComparison.OrdinalIgnoreCase);
-            if (error != null)
-            {
-                DisplayResultHelper(error.ToString());
-                return;
-            }
-
-            var errorDetail = result.SelectToken("Response.error_detail");
-            if (errorDetail != null)
-            {
-                DisplayResultHelper(errorDetail.ToString());
-                return;
-            }
-
-            var receipt = result.SelectToken("Response.customer_receipt");
-            if (receipt != null)
-            {
-                DisplayResultHelper(receipt.ToString());
             }
         }
 
@@ -221,7 +324,10 @@ namespace spice_sample_pos
 
         private static string PosRefIdHelper()
         {
-            return Guid.NewGuid().ToString("N");
+            Settings.CurrentPosRefId = Guid.NewGuid().ToString("N");
+            Settings.Save();
+
+            return Settings.CurrentPosRefId;
         }
     }
 }

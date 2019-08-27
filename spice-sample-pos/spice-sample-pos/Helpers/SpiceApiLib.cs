@@ -1,8 +1,6 @@
-﻿using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Web;
-using System.Windows.Forms.VisualStyles;
+﻿using System;
+using System.Net;
+using System.Net.Http;
 using Flurl;
 using Flurl.Http;
 using spice_sample_pos.Models;
@@ -16,8 +14,9 @@ namespace spice_sample_pos.Helpers
 
         // TODO: Extension methods, abstract error handling and headers
 
-        public static string Purchase(string posRefId, int purchaseAmountCents, int tipAmountCents,
-            int cashoutAmountCents, bool promptForCashout, int surchargeAmountCents, string headerPosName, string headerPosVersion)
+        public static HttpResponseMessage Purchase(string posRefId, int purchaseAmountCents, int tipAmountCents, 
+            int cashoutAmountCents, bool promptForCashout, int surchargeAmountCents, string headerPosName,
+            string headerPosVersion)
         {
             var purchaseRequest = new PurchaseRequest
             {
@@ -35,21 +34,52 @@ namespace spice_sample_pos.Helpers
                     .AppendPathSegment("purchase")
                     .WithHeader(HeaderPosName, headerPosName)
                     .WithHeader(HeaderPosVersion, headerPosVersion)
-                    .PostJsonAsync(purchaseRequest).ConfigureAwait(false);
+                    .PostJsonAsync(purchaseRequest)
+                    .Result;
 
-                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+                return response;
             }
-            catch (FlurlHttpTimeoutException ex)
+            catch (AggregateException ae)
             {
-                return ex.Message;
-            }
-            catch (FlurlHttpException ex)
-            {
-                return ex.Message;
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
             }
         }
 
-        public static string Moto(string posRefId, int purchaseAmountCents, int surchargeAmountCents,
+        public static HttpResponseMessage Purchase(string posRefId, string headerPosName, string headerPosVersion)
+        {
+            try
+            {
+                var response = "http://localhost:8282/v1"
+                    .AppendPathSegment("purchase")
+                    .SetQueryParams(new
+                    {
+                        posRefId
+                    })
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
+                    .GetAsync().Result;
+
+                return response;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
+            }
+        }
+
+        public static HttpResponseMessage Moto(string posRefId, int purchaseAmountCents, int surchargeAmountCents,
             bool suppressMerchantPassword, string headerPosName, string headerPosVersion)
         {
             var motoRequest = new MotoRequest
@@ -66,21 +96,54 @@ namespace spice_sample_pos.Helpers
                     .AppendPathSegment("moto")
                     .WithHeader(HeaderPosName, headerPosName)
                     .WithHeader(HeaderPosVersion, headerPosVersion)
-                    .PostJsonAsync(motoRequest).ConfigureAwait(false);
+                    .PostJsonAsync(motoRequest)
+                    .Result;
 
-                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+                return response;
             }
-            catch (FlurlHttpTimeoutException ex)
+            catch (AggregateException ae)
             {
-                return ex.Message;
-            }
-            catch (FlurlHttpException ex)
-            {
-                return ex.Message;
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
             }
         }
 
-        public static string Refund(string posRefId, int refundAmountCents, bool suppressMerchantPassword, string headerPosName, string headerPosVersion)
+        public static HttpResponseMessage Moto(string posRefId, string headerPosName, string headerPosVersion)
+        {
+            try
+            {
+                var response = "http://localhost:8282/v1"
+                    .AppendPathSegment("moto")
+                    .SetQueryParams(new
+                    {
+                        posRefId
+                    })
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
+                    .GetAsync()
+                    .Result;
+
+                return response;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
+            }
+        }
+
+        public static HttpResponseMessage Refund(string posRefId, int refundAmountCents, bool suppressMerchantPassword,
+            string headerPosName, string headerPosVersion)
         {
             var refundRequest = new RefundRequest
             {
@@ -95,23 +158,56 @@ namespace spice_sample_pos.Helpers
                     .AppendPathSegment("refund")
                     .WithHeader(HeaderPosName, headerPosName)
                     .WithHeader(HeaderPosVersion, headerPosVersion)
-                    .PostJsonAsync(refundRequest).ConfigureAwait(false);
+                    .PostJsonAsync(refundRequest)
+                    .Result;
 
-                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+                return response;
             }
-            catch (FlurlHttpTimeoutException ex)
+            catch (AggregateException ae)
             {
-                return ex.Message;
-            }
-            catch (FlurlHttpException ex)
-            {
-                return ex.Message;
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
             }
         }
 
-        public static string SettlementEnquiry(string posRefId, string headerPosName, string headerPosVersion)
+        public static HttpResponseMessage Refund(string posRefId, string headerPosName, string headerPosVersion)
         {
-            var SettlementEnquiry = new SettlementEnquiryRequest()
+            try
+            {
+                var response = "http://localhost:8282/v1"
+                    .AppendPathSegment("refund")
+                    .SetQueryParams(new
+                    {
+                        posRefId
+                    })
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
+                    .GetAsync()
+                    .Result;
+
+                return response;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
+            }
+        }
+
+        public static HttpResponseMessage SettlementEnquiry(string posRefId, string headerPosName,
+            string headerPosVersion)
+        {
+            var settlementEnquiry = new SettlementEnquiryRequest()
             {
                 PosRefId = posRefId,
             };
@@ -122,45 +218,48 @@ namespace spice_sample_pos.Helpers
                     .AppendPathSegment("settlement_enquiry")
                     .WithHeader(HeaderPosName, headerPosName)
                     .WithHeader(HeaderPosVersion, headerPosVersion)
-                    .PostJsonAsync(SettlementEnquiry).ConfigureAwait(false);
+                    .PostJsonAsync(settlementEnquiry)
+                    .Result;
 
-                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+                return response;
             }
-            catch (FlurlHttpTimeoutException ex)
+            catch (AggregateException ae)
             {
-                return ex.Message;
-            }
-            catch (FlurlHttpException ex)
-            {
-                return ex.Message;
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
             }
         }
 
-        public static string PayAtTable(string headerPosName, string headerPosVersion)
-        {
-            try
-            {
-                var response = "http://localhost:8282/v1"
-                    .AppendPathSegment("pat")
-                    .WithHeader(HeaderPosName, headerPosName)
-                    .WithHeader(HeaderPosVersion, headerPosVersion)
-                    .GetAsync().ConfigureAwait(false);
+        //public static string PayAtTable(string headerPosName, string headerPosVersion)
+        //{
+        //    try
+        //    {
+        //        var response = "http://localhost:8282/v1"
+        //            .AppendPathSegment("pat")
+        //            .WithHeader(HeaderPosName, headerPosName)
+        //            .WithHeader(HeaderPosVersion, headerPosVersion)
+        //            .GetAsync().ConfigureAwait(false);
 
-                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
-            }
-            catch (FlurlHttpTimeoutException ex)
-            {
-                return ex.Message;
-            }
-            catch (FlurlHttpException ex)
-            {
-                // need to log and call it again
-                PayAtTable("posname", "posversion");
-                return ex.Message;
-            }
-        }
+        //        return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+        //    }
+        //    catch (AggregateException ae)
+        //    {
+        //        foreach (var ex in ae.InnerExceptions)
+        //        {
+        //            if (ex is FlurlHttpTimeoutException)
+        //                return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+        //        }
 
-        public static string Ping(string headerPosName, string headerPosVersion)
+        //        throw;
+        //    }
+        //}
+
+        public static HttpResponseMessage Ping(string headerPosName, string headerPosVersion)
         {
             try
             {
@@ -168,19 +267,21 @@ namespace spice_sample_pos.Helpers
                     .AppendPathSegment("ping")
                     .WithHeader(HeaderPosName, headerPosName)
                     .WithHeader(HeaderPosVersion, headerPosVersion)
-                    .GetAsync().ConfigureAwait(false);
+                    .GetAsync()
+                    .Result;
 
-                return response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+                return response;
             }
-            catch (FlurlHttpTimeoutException ex)
+            catch (AggregateException ae)
             {
-                return ex.Message;
-            }
-            catch (FlurlHttpException ex)
-            {
-                return ex.Message;
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
             }
         }
-
     }
 }
