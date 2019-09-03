@@ -1,14 +1,16 @@
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Net;
-using System.Reflection;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Windows.Forms;
 using spice_sample_pos.Helpers;
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Globalization;
+using System.Net;
+using System.Reflection;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace spice_sample_pos
 {
@@ -17,13 +19,18 @@ namespace spice_sample_pos
         private readonly CultureInfo _cultureInfo = new CultureInfo("en-Au");
         private const string PosName = "HabaneroPos";
         private readonly string _posVersion = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
-        private readonly Timer _timer = new Timer();
+        private readonly System.Timers.Timer _timer = new System.Timers.Timer();
         private readonly BackgroundWorker _worker = new BackgroundWorker();
         private static readonly Properties.Settings Settings = Properties.Settings.Default;
+        private bool isRefreshStart = false;
 
         public frmMain()
         {
             InitializeComponent();
+
+            _worker.DoWork += worker_DoWork;
+            _worker.WorkerReportsProgress = true;
+            _worker.WorkerSupportsCancellation = true;
 
             // material skin intiailisation
             var materialSkinManager = MaterialSkinManager.Instance;
@@ -41,6 +48,23 @@ namespace spice_sample_pos
             InvokeRecovery();
         }
 
+        private void worker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            BackgroundWorker bwAsync = sender as BackgroundWorker;
+
+            if (bwAsync.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            while (isRefreshStart)
+            {
+                RefreshStatusAsync();
+                Thread.Sleep(5000);
+            }
+        }
+
         private void tsMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResetControls();
@@ -48,31 +72,15 @@ namespace spice_sample_pos
 
         private void ResetControls()
         {
+            if (_worker.IsBusy)
+            {
+                _worker.CancelAsync();
+            }
+
+            isRefreshStart = false;
             const string moneyDefault = @"0";
-            var buttonText = string.Empty;
 
             pnlResult.SendToBack();
-
-            switch (tcMain.SelectedTab.Name)
-            {
-                case "Purchase":
-                    buttonText = "Purchase";
-                    break;
-                case "MOTO":
-                    buttonText = "MOTO";
-                    break;
-                case "Refund":
-                    buttonText = "Refund";
-                    break;
-                case "SettlementEnquiry":
-                    buttonText = "Enquiry";
-                    break;
-                case "PayAtTable":
-                    buttonText = "Pay at Table";
-                    break;  
-                default:
-                    break;
-            }
 
             txtCashout.Text = moneyDefault;
             txtPurchase.Text = moneyDefault;
@@ -84,7 +92,36 @@ namespace spice_sample_pos
             rbRefundSuppressPasswordNo.Checked = true;
             txtMotoPurchase.Text = moneyDefault;
             txtMotoSurcharge.Text = moneyDefault;
-            btnAction.Text = buttonText;
+
+            switch (tcMain.SelectedTab.Name)
+            {
+                case "Purchase":
+                    btnAction.Text = "Purchase";
+                    break;
+                case "MOTO":
+                    btnAction.Text = "MOTO";
+                    break;
+                case "Refund":
+                    btnAction.Text = "Refund";
+                    break;
+                case "SettlementEnquiry":
+                    btnAction.Text = "Enquiry";
+                    break;
+                case "PayAtTable":
+                    btnAction.Text = "Pay at Table";
+                    break;
+                case "Status":
+                    btnAction.Text = "Refresh";
+                    isRefreshStart = true;
+                    if (!_worker.IsBusy)
+                    {
+                        _worker.RunWorkerAsync();
+                    }
+                    btnAction.PerformClick();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void btnAction_Click(object sender, EventArgs e)
@@ -101,9 +138,9 @@ namespace spice_sample_pos
                 return;
             }
 
-            if (!IsPaired())
+            if (btnAction.Text != "Refresh" && !IsPairedAsync())
             {
-                DisplayResultHelper("Please pair your adaptor");
+                DisplayResultHelper("Please check your adaptor");
                 return;
             }
 
@@ -173,13 +210,22 @@ namespace spice_sample_pos
                     break;
                 case "Pay at Table":
                     break;
+                case "Refresh":
+                    RefreshStatusAsync();
+                    break;
             }
 
             Settings.TransactionComplete = true;
             Settings.Save();
         }
 
-        private bool IsPaired()
+        public void RefreshStatusAsync()
+        {
+            var statusResponse = SpiceApiLib.Ping(PosName, _posVersion);
+            DisplayResult(statusResponse.Content.ReadAsStringAsync().Result);
+        }
+
+        private bool IsPairedAsync()
         {
             var response = SpiceApiLib.Ping(PosName, _posVersion);
 
@@ -239,7 +285,6 @@ namespace spice_sample_pos
             Settings.TransactionComplete = true;
             Settings.Save();
         }
-
 
         private void IsSignatureRequired(string data)
         {
@@ -307,6 +352,13 @@ namespace spice_sample_pos
                     DisplayResultHelper($"Manual Eftpos - The transaction was {successful}");
                     return;
                 }
+
+                var status = result.SelectToken("status");
+                if (status != null)
+                {
+                    DisplayStatusResultHelper(result);
+                    return;
+                }
             }
             catch
             {
@@ -320,6 +372,19 @@ namespace spice_sample_pos
             lblResult.Text = displayText;
             pnlResult.BringToFront();
             btnAction.Text = "OK";
+        }
+
+        private void DisplayStatusResultHelper(JObject result)
+        {
+            this.Invoke(new MethodInvoker(delegate ()
+            {
+                lblCurrentAdaptorStatus.Text =
+            "STATUS: " + result.SelectToken("status").ToString() +
+            "\nDATETIME: " + result.SelectToken("pong").ToString() +
+            "\nFLOW: " + result.SelectToken("flow").ToString();
+                lblCurrentAdaptorStatus.ForeColor = Color.Green;
+            }));
+
         }
 
         private static string PosRefIdHelper()
