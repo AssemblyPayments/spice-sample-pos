@@ -14,7 +14,7 @@ namespace spice_sample_pos.Helpers
 
         // TODO: Extension methods, abstract error handling and headers
 
-        public static HttpResponseMessage Purchase(string posRefId, int purchaseAmountCents, int tipAmountCents, 
+        public static HttpResponseMessage Purchase(string posRefId, int purchaseAmountCents, int tipAmountCents,
             int cashoutAmountCents, bool promptForCashout, int surchargeAmountCents, string headerPosName,
             string headerPosVersion)
         {
@@ -276,6 +276,9 @@ namespace spice_sample_pos.Helpers
             {
                 foreach (var ex in ae.InnerExceptions)
                 {
+                    if (ex is FlurlHttpException)
+                        return new HttpResponseMessage(HttpStatusCode.BadRequest);
+
                     if (ex is FlurlHttpTimeoutException)
                         return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
                 }

@@ -222,7 +222,15 @@ namespace spice_sample_pos
         public void RefreshStatusAsync()
         {
             var statusResponse = SpiceApiLib.Ping(PosName, _posVersion);
-            DisplayResult(statusResponse.Content.ReadAsStringAsync().Result);
+            if (!statusResponse.IsSuccessStatusCode)
+            {
+                DisplayResultHelper("Please check your adaptor");
+            }
+            else
+            {
+                DisplayResult(statusResponse.Content.ReadAsStringAsync().Result);
+            }
+
         }
 
         private bool IsPairedAsync()
@@ -369,9 +377,12 @@ namespace spice_sample_pos
 
         private void DisplayResultHelper(string displayText)
         {
-            lblResult.Text = displayText;
-            pnlResult.BringToFront();
-            btnAction.Text = "OK";
+            this.Invoke(new MethodInvoker(delegate ()
+            {
+                lblResult.Text = displayText;
+                pnlResult.BringToFront();
+                btnAction.Text = "OK";
+            }));
         }
 
         private void DisplayStatusResultHelper(JObject result)
@@ -384,7 +395,6 @@ namespace spice_sample_pos
             "\nFLOW: " + result.SelectToken("flow").ToString();
                 lblCurrentAdaptorStatus.ForeColor = Color.Green;
             }));
-
         }
 
         private static string PosRefIdHelper()
