@@ -28,7 +28,7 @@ namespace spice_sample_pos
         {
             InitializeComponent();
 
-            _worker.DoWork += worker_DoWork;
+            _worker.DoWork += worker_RefreshAdaptorStatus;
             _worker.WorkerReportsProgress = true;
             _worker.WorkerSupportsCancellation = true;
 
@@ -48,7 +48,7 @@ namespace spice_sample_pos
             InvokeRecovery();
         }
 
-        private void worker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void worker_RefreshAdaptorStatus(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             BackgroundWorker bwAsync = sender as BackgroundWorker;
 
