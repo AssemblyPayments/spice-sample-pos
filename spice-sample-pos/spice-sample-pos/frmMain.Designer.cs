@@ -28,6 +28,7 @@ namespace spice_sample_pos
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tcMain = new MaterialSkin.Controls.MaterialTabControl();
             this.Purchase = new System.Windows.Forms.TabPage();
@@ -634,6 +635,7 @@ namespace spice_sample_pos
             this.Controls.Add(this.tsMain);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.pnlResult);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
