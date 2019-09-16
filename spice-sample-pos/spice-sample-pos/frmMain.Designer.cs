@@ -58,8 +58,6 @@ namespace spice_sample_pos
             this.txtRefund = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.SettlementEnquiry = new System.Windows.Forms.TabPage();
-            this.Status = new System.Windows.Forms.TabPage();
-            this.lblCurrentAdaptorStatus = new MaterialSkin.Controls.MaterialLabel();
             this.tsMain = new MaterialSkin.Controls.MaterialTabSelector();
             this.btnAction = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblReceipt = new MaterialSkin.Controls.MaterialLabel();
@@ -67,13 +65,12 @@ namespace spice_sample_pos
             this.lblResult = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblAdaptorStatus = new MaterialSkin.Controls.MaterialLabel();
+            this.lblCurrentAdaptorStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tcMain.SuspendLayout();
             this.Purchase.SuspendLayout();
             this.MOTO.SuspendLayout();
             this.Refund.SuspendLayout();
-            this.Status.SuspendLayout();
             this.pnlResult.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,7 +90,6 @@ namespace spice_sample_pos
             this.tcMain.Controls.Add(this.MOTO);
             this.tcMain.Controls.Add(this.Refund);
             this.tcMain.Controls.Add(this.SettlementEnquiry);
-            this.tcMain.Controls.Add(this.Status);
             this.tcMain.Depth = 0;
             this.tcMain.Location = new System.Drawing.Point(470, 116);
             this.tcMain.MouseState = MaterialSkin.MouseState.HOVER;
@@ -541,31 +537,6 @@ namespace spice_sample_pos
             this.SettlementEnquiry.Text = "Settlement Enquiry";
             this.SettlementEnquiry.UseVisualStyleBackColor = true;
             // 
-            // Status
-            // 
-            this.Status.BackColor = System.Drawing.SystemColors.Control;
-            this.Status.Controls.Add(this.lblCurrentAdaptorStatus);
-            this.Status.Controls.Add(this.lblAdaptorStatus);
-            this.Status.Location = new System.Drawing.Point(4, 22);
-            this.Status.Name = "Status";
-            this.Status.Size = new System.Drawing.Size(641, 396);
-            this.Status.TabIndex = 5;
-            this.Status.Text = "Status";
-            // 
-            // lblCurrentAdaptorStatus
-            // 
-            this.lblCurrentAdaptorStatus.AutoSize = true;
-            this.lblCurrentAdaptorStatus.BackColor = System.Drawing.SystemColors.Window;
-            this.lblCurrentAdaptorStatus.Depth = 0;
-            this.lblCurrentAdaptorStatus.Font = new System.Drawing.Font("Roboto", 11F);
-            this.lblCurrentAdaptorStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblCurrentAdaptorStatus.Location = new System.Drawing.Point(245, 164);
-            this.lblCurrentAdaptorStatus.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblCurrentAdaptorStatus.Name = "lblCurrentAdaptorStatus";
-            this.lblCurrentAdaptorStatus.Size = new System.Drawing.Size(162, 19);
-            this.lblCurrentAdaptorStatus.TabIndex = 4;
-            this.lblCurrentAdaptorStatus.Text = "Current Adaptor Status";
-            // 
             // tsMain
             // 
             this.tsMain.BaseTabControl = this.tcMain;
@@ -641,25 +612,21 @@ namespace spice_sample_pos
             this.label1.TabIndex = 10;
             this.label1.Text = "Powered By Assembly Payments";
             // 
-            // lblAdaptorStatus
+            // lblCurrentAdaptorStatus
             // 
-            this.lblAdaptorStatus.AutoSize = true;
-            this.lblAdaptorStatus.BackColor = System.Drawing.SystemColors.Window;
-            this.lblAdaptorStatus.Depth = 0;
-            this.lblAdaptorStatus.Font = new System.Drawing.Font("Roboto", 11F);
-            this.lblAdaptorStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblAdaptorStatus.Location = new System.Drawing.Point(3, 11);
-            this.lblAdaptorStatus.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblAdaptorStatus.Name = "lblAdaptorStatus";
-            this.lblAdaptorStatus.Size = new System.Drawing.Size(109, 19);
-            this.lblAdaptorStatus.TabIndex = 3;
-            this.lblAdaptorStatus.Text = "Adaptor Status";
+            this.lblCurrentAdaptorStatus.AutoSize = true;
+            this.lblCurrentAdaptorStatus.Location = new System.Drawing.Point(470, 565);
+            this.lblCurrentAdaptorStatus.Name = "lblCurrentAdaptorStatus";
+            this.lblCurrentAdaptorStatus.Size = new System.Drawing.Size(77, 13);
+            this.lblCurrentAdaptorStatus.TabIndex = 11;
+            this.lblCurrentAdaptorStatus.Text = "Adaptor Status";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1141, 587);
+            this.Controls.Add(this.lblCurrentAdaptorStatus);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tcMain);
             this.Controls.Add(this.lblReceipt);
@@ -680,8 +647,6 @@ namespace spice_sample_pos
             this.MOTO.PerformLayout();
             this.Refund.ResumeLayout(false);
             this.Refund.PerformLayout();
-            this.Status.ResumeLayout(false);
-            this.Status.PerformLayout();
             this.pnlResult.ResumeLayout(false);
             this.pnlResult.PerformLayout();
             this.ResumeLayout(false);
@@ -727,9 +692,7 @@ namespace spice_sample_pos
         private MaterialSkin.Controls.MaterialRadioButton rbRefundSuppressPasswordYes;
         private MaterialSkin.Controls.MaterialRadioButton rbRefundSuppressPasswordNo;
         private MaterialSkin.Controls.MaterialLabel materialLabel10;
-        private System.Windows.Forms.TabPage Status;
-        private MaterialSkin.Controls.MaterialLabel lblCurrentAdaptorStatus;
-        private MaterialSkin.Controls.MaterialLabel lblAdaptorStatus;
+        private System.Windows.Forms.Label lblCurrentAdaptorStatus;
     }
 }
 

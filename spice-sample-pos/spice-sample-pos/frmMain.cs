@@ -4,12 +4,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using spice_sample_pos.Helpers;
 using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Globalization;
 using System.Net;
 using System.Reflection;
-using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace spice_sample_pos
@@ -19,18 +17,16 @@ namespace spice_sample_pos
         private readonly CultureInfo _cultureInfo = new CultureInfo("en-Au");
         private const string PosName = "HabaneroPos";
         private readonly string _posVersion = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
-        private readonly System.Timers.Timer _timer = new System.Timers.Timer();
-        private readonly BackgroundWorker _worker = new BackgroundWorker();
         private static readonly Properties.Settings Settings = Properties.Settings.Default;
-        private bool isRefreshStart = false;
 
         public frmMain()
         {
             InitializeComponent();
 
-            _worker.DoWork += worker_RefreshAdaptorStatus;
-            _worker.WorkerReportsProgress = true;
-            _worker.WorkerSupportsCancellation = true;
+            // timer for adaptor status
+            var timer = new System.Timers.Timer(1000);
+            timer.Elapsed += OnRefreshAdaptorStatus;
+            timer.Enabled = true;
 
             // material skin intiailisation
             var materialSkinManager = MaterialSkinManager.Instance;
@@ -48,21 +44,9 @@ namespace spice_sample_pos
             InvokeRecovery();
         }
 
-        private void worker_RefreshAdaptorStatus(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void OnRefreshAdaptorStatus(object source, ElapsedEventArgs e)
         {
-            BackgroundWorker bwAsync = sender as BackgroundWorker;
-
-            if (bwAsync.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
-
-            while (isRefreshStart)
-            {
-                RefreshStatusAsync();
-                Thread.Sleep(5000);
-            }
+            DisplayAdaptorStatus();
         }
 
         private void tsMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -72,12 +56,6 @@ namespace spice_sample_pos
 
         private void ResetControls()
         {
-            if (_worker.IsBusy)
-            {
-                _worker.CancelAsync();
-            }
-
-            isRefreshStart = false;
             const string moneyDefault = @"0";
 
             pnlResult.SendToBack();
@@ -110,15 +88,6 @@ namespace spice_sample_pos
                 case "PayAtTable":
                     btnAction.Text = "Pay at Table";
                     break;
-                case "Status":
-                    btnAction.Text = "Refresh";
-                    isRefreshStart = true;
-                    if (!_worker.IsBusy)
-                    {
-                        _worker.RunWorkerAsync();
-                    }
-                    btnAction.PerformClick();
-                    break;
                 default:
                     break;
             }
@@ -138,7 +107,7 @@ namespace spice_sample_pos
                 return;
             }
 
-            if (btnAction.Text != "Refresh" && !IsPairedAsync())
+            if (!IsAdaptorPaired())
             {
                 DisplayResultHelper("Please check your adaptor");
                 return;
@@ -210,37 +179,30 @@ namespace spice_sample_pos
                     break;
                 case "Pay at Table":
                     break;
-                case "Refresh":
-                    RefreshStatusAsync();
-                    break;
             }
 
             Settings.TransactionComplete = true;
             Settings.Save();
         }
 
-        public void RefreshStatusAsync()
+        public void DisplayAdaptorStatus()
         {
-            var statusResponse = SpiceApiLib.Ping(PosName, _posVersion);
-            if (!statusResponse.IsSuccessStatusCode)
-            {
-                DisplayResultHelper("Please check your adaptor");
-            }
-            else
-            {
-                DisplayResult(statusResponse.Content.ReadAsStringAsync().Result);
-            }
+            var status = SpiceApiLib.Ping(PosName, _posVersion);
 
+            if (!status.IsSuccessStatusCode)
+                return;
+
+            DisplayResult(status.Content.ReadAsStringAsync().Result);
         }
 
-        private bool IsPairedAsync()
+        private bool IsAdaptorPaired()
         {
-            var response = SpiceApiLib.Ping(PosName, _posVersion);
+            var status = SpiceApiLib.Ping(PosName, _posVersion);
 
-            if (!response.IsSuccessStatusCode)
+            if (!status.IsSuccessStatusCode)
                 return false;
 
-            var result = (JObject)JsonConvert.DeserializeObject(response.Content?.ReadAsStringAsync().Result);
+            var result = (JObject)JsonConvert.DeserializeObject(status.Content?.ReadAsStringAsync().Result);
             var paired = result.SelectToken("status");
 
             return paired.ToString() == "PairedConnected";
@@ -377,23 +339,16 @@ namespace spice_sample_pos
 
         private void DisplayResultHelper(string displayText)
         {
-            this.Invoke(new MethodInvoker(delegate ()
-            {
-                lblResult.Text = displayText;
-                pnlResult.BringToFront();
-                btnAction.Text = "OK";
-            }));
+            lblResult.Text = displayText;
+            pnlResult.BringToFront();
+            btnAction.Text = "OK";
         }
 
         private void DisplayStatusResultHelper(JObject result)
         {
-            this.Invoke(new MethodInvoker(delegate ()
+            Invoke(new MethodInvoker(delegate ()
             {
-                lblCurrentAdaptorStatus.Text =
-            "STATUS: " + result.SelectToken("status").ToString() +
-            "\nDATETIME: " + result.SelectToken("pong").ToString() +
-            "\nFLOW: " + result.SelectToken("flow").ToString();
-                lblCurrentAdaptorStatus.ForeColor = Color.Green;
+                lblCurrentAdaptorStatus.Text = "Adaptor Status: " + result.SelectToken("status").ToString() + " " + result.SelectToken("pong").ToString() + " " + result.SelectToken("flow").ToString();
             }));
         }
 
