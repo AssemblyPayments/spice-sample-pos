@@ -308,26 +308,26 @@ namespace spice_sample_pos
                     return;
                 }
 
-                var errorDetail = result.SelectToken("Response.error_detail");
+				// customer receipt
+				var receipt = result.SelectToken("Response.customer_receipt");
+				if (receipt != null)
+				{
+					DisplayResultHelper(receipt.ToString());
+					return;
+				}
+
+				// merchant receipt - signature
+				var signatureRequired = result.SelectToken("signatureRequired.receiptToSign");
+				if (signatureRequired != null)
+				{
+					DisplayResultHelper(signatureRequired.ToString());
+					return;
+				}
+
+				var errorDetail = result.SelectToken("Response.error_detail");
                 if (errorDetail != null)
                 {
                     DisplayResultHelper(errorDetail.ToString());
-                    return;
-                }
-
-                // customer receipt
-                var receipt = result.SelectToken("Response.customer_receipt");
-                if (receipt != null)
-                {
-                    DisplayResultHelper(receipt.ToString());
-                    return;
-                }
-
-                // merchant receipt - signature
-                var signatureRequired = result.SelectToken("signatureRequired.receiptToSign");
-                if (signatureRequired != null)
-                {
-                    DisplayResultHelper(signatureRequired.ToString());
                     return;
                 }
 
