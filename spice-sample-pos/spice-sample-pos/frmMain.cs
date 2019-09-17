@@ -346,9 +346,18 @@ namespace spice_sample_pos
 
         private void DisplayStatusResultHelper(JObject result)
         {
+            DateTime dateTime = DateTime.Now;
+
+            var parse = DateTime.TryParse(result.SelectToken("pong").ToString(), out DateTime parsedValue);
+
+            if (parse)
+            {
+                dateTime = parsedValue.ToLocalTime();
+            }
+
             Invoke(new MethodInvoker(delegate ()
             {
-                lblCurrentAdaptorStatus.Text = "Adaptor Status: " + result.SelectToken("status").ToString() + " " + result.SelectToken("pong").ToString() + " " + result.SelectToken("flow").ToString();
+                lblCurrentAdaptorStatus.Text = "Adaptor Status: " + result.SelectToken("status").ToString() + " " + dateTime.ToString() + " " + result.SelectToken("flow").ToString();
             }));
         }
 
