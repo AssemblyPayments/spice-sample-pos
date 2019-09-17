@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using spice_sample_pos.Helpers;
 using System;
+using System.Net.Http;
 using System.Globalization;
 using System.Net;
 using System.Reflection;
@@ -18,6 +19,8 @@ namespace spice_sample_pos
         private const string PosName = "HabaneroPos";
         private readonly string _posVersion = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
         private static readonly Properties.Settings Settings = Properties.Settings.Default;
+
+        private enum TransactionType { purchase, refund };
 
         public frmMain()
         {
@@ -130,7 +133,7 @@ namespace spice_sample_pos
                         if (response.IsSuccessStatusCode)
                         {
                             DisplayResult(response.Content.ReadAsStringAsync().Result);
-                            IsSignatureRequired(response.Content.ReadAsStringAsync().Result);
+                            IsSignatureRequired(response.Content.ReadAsStringAsync().Result, TransactionType.purchase);
                         }
                         else if (response.StatusCode == HttpStatusCode.RequestTimeout)
                         {
@@ -168,6 +171,11 @@ namespace spice_sample_pos
                         if (response.IsSuccessStatusCode)
                         {
                             DisplayResult(response.Content.ReadAsStringAsync().Result);
+                            IsSignatureRequired(response.Content.ReadAsStringAsync().Result, TransactionType.refund);
+                        }
+                        else if (response.StatusCode == HttpStatusCode.RequestTimeout)
+                        {
+                            // Manual Override https://developer.assemblypayments.com/docs/manual-user-override
                         }
                     }
 
@@ -256,8 +264,10 @@ namespace spice_sample_pos
             Settings.Save();
         }
 
-        private void IsSignatureRequired(string data)
+        private void IsSignatureRequired(string data, TransactionType transactionType)
         {
+            HttpResponseMessage response;
+
             // https://developer.assemblypayments.com/docs/signature-transaction
             var currentPosRefId = Settings.CurrentPosRefId;
 
@@ -269,7 +279,14 @@ namespace spice_sample_pos
                 return;
 
             // signature accept or decline, get result from Assembly Payments Adaptor
-            var response = SpiceApiLib.Purchase(currentPosRefId, PosName, _posVersion);
+            if (transactionType == 0)
+            {
+                response = SpiceApiLib.Purchase(currentPosRefId, PosName, _posVersion);
+            }
+            else
+            {
+                response = SpiceApiLib.Refund(currentPosRefId, PosName, _posVersion);
+            }
 
             // customer receipt
             DisplayResult(response.Content.ReadAsStringAsync().Result);
