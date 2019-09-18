@@ -13,7 +13,7 @@ namespace spice_sample_pos.Models
         [JsonProperty(PropertyName = "tipAmount")]
         public int TipAmountCents { get; set; }
 
-        [JsonProperty(PropertyName = "cashOutAmount")]
+        [JsonProperty(PropertyName = "cashoutAmount")]
         public int CashOutAmountCents { get; set; }
 
         [JsonProperty(PropertyName = "promptForCashout")]

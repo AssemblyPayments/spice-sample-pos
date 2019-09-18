@@ -7,6 +7,8 @@ init:
 install:
   # force to use msbuild 15.0 the path as VS2013 solutions uses msbuild 12.0 
   - cmd: set PATH=C:\Program Files (x86)\MSBuild\15.0\Bin;%PATH%
+build:
+  project: spice-sample-pos\spice-sample-pos.sln
 before_build:
   # restore nuget
-  - nuget restore
+  - nuget restore spice-sample-pos\spice-sample-pos.sln

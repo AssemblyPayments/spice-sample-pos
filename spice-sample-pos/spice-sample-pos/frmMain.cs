@@ -1,14 +1,15 @@
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Net;
-using System.Reflection;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Windows.Forms;
 using spice_sample_pos.Helpers;
+using System;
+using System.Net.Http;
+using System.Globalization;
+using System.Net;
+using System.Reflection;
+using System.Timers;
+using System.Windows.Forms;
 
 namespace spice_sample_pos
 {
@@ -17,13 +18,18 @@ namespace spice_sample_pos
         private readonly CultureInfo _cultureInfo = new CultureInfo("en-Au");
         private const string PosName = "HabaneroPos";
         private readonly string _posVersion = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
-        private readonly Timer _timer = new Timer();
-        private readonly BackgroundWorker _worker = new BackgroundWorker();
         private static readonly Properties.Settings Settings = Properties.Settings.Default;
+
+        private enum TransactionType { purchase, refund };
 
         public frmMain()
         {
             InitializeComponent();
+
+            // timer for adaptor status
+            var timer = new System.Timers.Timer(1000);
+            timer.Elapsed += OnRefreshAdaptorStatus;
+            timer.Enabled = true;
 
             // material skin intiailisation
             var materialSkinManager = MaterialSkinManager.Instance;
@@ -41,6 +47,11 @@ namespace spice_sample_pos
             InvokeRecovery();
         }
 
+        private void OnRefreshAdaptorStatus(object source, ElapsedEventArgs e)
+        {
+            DisplayAdaptorStatus();
+        }
+
         private void tsMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResetControls();
@@ -49,30 +60,8 @@ namespace spice_sample_pos
         private void ResetControls()
         {
             const string moneyDefault = @"0";
-            var buttonText = string.Empty;
 
             pnlResult.SendToBack();
-
-            switch (tcMain.SelectedTab.Name)
-            {
-                case "Purchase":
-                    buttonText = "Purchase";
-                    break;
-                case "MOTO":
-                    buttonText = "MOTO";
-                    break;
-                case "Refund":
-                    buttonText = "Refund";
-                    break;
-                case "SettlementEnquiry":
-                    buttonText = "Enquiry";
-                    break;
-                case "PayAtTable":
-                    buttonText = "Pay at Table";
-                    break;  
-                default:
-                    break;
-            }
 
             txtCashout.Text = moneyDefault;
             txtPurchase.Text = moneyDefault;
@@ -84,7 +73,27 @@ namespace spice_sample_pos
             rbRefundSuppressPasswordNo.Checked = true;
             txtMotoPurchase.Text = moneyDefault;
             txtMotoSurcharge.Text = moneyDefault;
-            btnAction.Text = buttonText;
+
+            switch (tcMain.SelectedTab.Name)
+            {
+                case "Purchase":
+                    btnAction.Text = "Purchase";
+                    break;
+                case "MOTO":
+                    btnAction.Text = "MOTO";
+                    break;
+                case "Refund":
+                    btnAction.Text = "Refund";
+                    break;
+                case "SettlementEnquiry":
+                    btnAction.Text = "Enquiry";
+                    break;
+                case "PayAtTable":
+                    btnAction.Text = "Pay at Table";
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void btnAction_Click(object sender, EventArgs e)
@@ -101,9 +110,9 @@ namespace spice_sample_pos
                 return;
             }
 
-            if (!IsPaired())
+            if (!IsAdaptorPaired())
             {
-                DisplayResultHelper("Please pair your adaptor");
+                DisplayResultHelper("Please check your adaptor");
                 return;
             }
 
@@ -124,7 +133,7 @@ namespace spice_sample_pos
                         if (response.IsSuccessStatusCode)
                         {
                             DisplayResult(response.Content.ReadAsStringAsync().Result);
-                            IsSignatureRequired(response.Content.ReadAsStringAsync().Result);
+                            IsSignatureRequired(response.Content.ReadAsStringAsync().Result, TransactionType.purchase);
                         }
                         else if (response.StatusCode == HttpStatusCode.RequestTimeout)
                         {
@@ -162,6 +171,11 @@ namespace spice_sample_pos
                         if (response.IsSuccessStatusCode)
                         {
                             DisplayResult(response.Content.ReadAsStringAsync().Result);
+                            IsSignatureRequired(response.Content.ReadAsStringAsync().Result, TransactionType.refund);
+                        }
+                        else if (response.StatusCode == HttpStatusCode.RequestTimeout)
+                        {
+                            // Manual Override https://developer.assemblypayments.com/docs/manual-user-override
                         }
                     }
 
@@ -179,14 +193,24 @@ namespace spice_sample_pos
             Settings.Save();
         }
 
-        private bool IsPaired()
+        public void DisplayAdaptorStatus()
         {
-            var response = SpiceApiLib.Ping(PosName, _posVersion);
+            var status = SpiceApiLib.Ping(PosName, _posVersion);
 
-            if (!response.IsSuccessStatusCode)
+            if (!status.IsSuccessStatusCode)
+                return;
+
+            DisplayResult(status.Content.ReadAsStringAsync().Result);
+        }
+
+        private bool IsAdaptorPaired()
+        {
+            var status = SpiceApiLib.Ping(PosName, _posVersion);
+
+            if (!status.IsSuccessStatusCode)
                 return false;
 
-            var result = (JObject)JsonConvert.DeserializeObject(response.Content?.ReadAsStringAsync().Result);
+            var result = (JObject)JsonConvert.DeserializeObject(status.Content?.ReadAsStringAsync().Result);
             var paired = result.SelectToken("status");
 
             return paired.ToString() == "PairedConnected";
@@ -240,9 +264,10 @@ namespace spice_sample_pos
             Settings.Save();
         }
 
-
-        private void IsSignatureRequired(string data)
+        private void IsSignatureRequired(string data, TransactionType transactionType)
         {
+            HttpResponseMessage response;
+
             // https://developer.assemblypayments.com/docs/signature-transaction
             var currentPosRefId = Settings.CurrentPosRefId;
 
@@ -254,7 +279,14 @@ namespace spice_sample_pos
                 return;
 
             // signature accept or decline, get result from Assembly Payments Adaptor
-            var response = SpiceApiLib.Purchase(currentPosRefId, PosName, _posVersion);
+            if (transactionType == 0)
+            {
+                response = SpiceApiLib.Purchase(currentPosRefId, PosName, _posVersion);
+            }
+            else
+            {
+                response = SpiceApiLib.Refund(currentPosRefId, PosName, _posVersion);
+            }
 
             // customer receipt
             DisplayResult(response.Content.ReadAsStringAsync().Result);
@@ -276,26 +308,26 @@ namespace spice_sample_pos
                     return;
                 }
 
-                var errorDetail = result.SelectToken("Response.error_detail");
+				// customer receipt
+				var receipt = result.SelectToken("Response.customer_receipt");
+				if (receipt != null)
+				{
+					DisplayResultHelper(receipt.ToString());
+					return;
+				}
+
+				// merchant receipt - signature
+				var signatureRequired = result.SelectToken("signatureRequired.receiptToSign");
+				if (signatureRequired != null)
+				{
+					DisplayResultHelper(signatureRequired.ToString());
+					return;
+				}
+
+				var errorDetail = result.SelectToken("Response.error_detail");
                 if (errorDetail != null)
                 {
                     DisplayResultHelper(errorDetail.ToString());
-                    return;
-                }
-
-                // customer receipt
-                var receipt = result.SelectToken("Response.customer_receipt");
-                if (receipt != null)
-                {
-                    DisplayResultHelper(receipt.ToString());
-                    return;
-                }
-
-                // merchant receipt - signature
-                var signatureRequired = result.SelectToken("signatureRequired.receiptToSign");
-                if (signatureRequired != null)
-                {
-                    DisplayResultHelper(signatureRequired.ToString());
                     return;
                 }
 
@@ -305,6 +337,13 @@ namespace spice_sample_pos
                 {
                     var successful = result.SelectToken("Response.success").ToString().ToLower() == "true" ? "successful" : "unsuccessful";
                     DisplayResultHelper($"Manual Eftpos - The transaction was {successful}");
+                    return;
+                }
+
+                var status = result.SelectToken("status");
+                if (status != null)
+                {
+                    DisplayStatusResultHelper(result);
                     return;
                 }
             }
@@ -320,6 +359,23 @@ namespace spice_sample_pos
             lblResult.Text = displayText;
             pnlResult.BringToFront();
             btnAction.Text = "OK";
+        }
+
+        private void DisplayStatusResultHelper(JObject result)
+        {
+            DateTime dateTime = DateTime.Now;
+
+            var parse = DateTime.TryParse(result.SelectToken("pong").ToString(), out DateTime parsedValue);
+
+            if (parse)
+            {
+                dateTime = parsedValue.ToLocalTime();
+            }
+
+            Invoke(new MethodInvoker(delegate ()
+            {
+                lblCurrentAdaptorStatus.Text = "Adaptor Status: " + result.SelectToken("status").ToString() + " " + dateTime.ToString() + " " + result.SelectToken("flow").ToString();
+            }));
         }
 
         private static string PosRefIdHelper()
