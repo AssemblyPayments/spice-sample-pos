@@ -11,4 +11,4 @@ build:
   project: spice-sample-pos\spice-sample-pos.sln
 before_build:
   # restore nuget
-  - nuget restore spice-samplepos\spice-sample-pos.sln
+  - nuget restore spice-sample-pos\spice-sample-pos.sln
