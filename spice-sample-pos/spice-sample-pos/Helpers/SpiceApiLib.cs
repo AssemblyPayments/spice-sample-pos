@@ -51,6 +51,38 @@ namespace spice_sample_pos.Helpers
             }
         }
 
+        public static HttpResponseMessage ZipPurchase(string posRefId, int purchaseAmountCents, string description, string headerPosName, string headerPosVersion)
+        {
+            try
+            {
+                var zipPurchaseRequest = new ZipPurchaseRequest
+                {
+                    PosRefId = posRefId,
+                    PurchaseAmountCents = purchaseAmountCents,
+                    Description = description
+                };
+
+                var response = "http://localhost:8282/v1"
+                    .AppendPathSegment("purchase/zip")
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
+                    .PostJsonAsync(zipPurchaseRequest)
+                    .Result;
+
+                return response;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
+            }
+        }
+
         public static HttpResponseMessage Purchase(string posRefId, string headerPosName, string headerPosVersion)
         {
             try
@@ -78,6 +110,7 @@ namespace spice_sample_pos.Helpers
                 throw;
             }
         }
+
 
         public static HttpResponseMessage Moto(string posRefId, int purchaseAmountCents, int surchargeAmountCents,
             bool suppressMerchantPassword, string headerPosName, string headerPosVersion)
@@ -188,6 +221,38 @@ namespace spice_sample_pos.Helpers
                     .WithHeader(HeaderPosName, headerPosName)
                     .WithHeader(HeaderPosVersion, headerPosVersion)
                     .GetAsync()
+                    .Result;
+
+                return response;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    if (ex is FlurlHttpTimeoutException)
+                        return new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+                }
+
+                throw;
+            }
+        }
+
+        public static HttpResponseMessage ZipRefund(string posRefId, int refundAmountCents, string receiptNumber, string headerPosName, string headerPosVersion)
+        {
+            try
+            {
+                var zipRefundRequest = new ZipRefundRequest
+                {
+                    PosRefId = posRefId,
+                    RefundAmountCents = refundAmountCents,
+                    ReceiptNumber = receiptNumber
+                };
+
+                var response = "http://localhost:8282/v1"
+                    .AppendPathSegment("refund/zip")
+                    .WithHeader(HeaderPosName, headerPosName)
+                    .WithHeader(HeaderPosVersion, headerPosVersion)
+                    .PostJsonAsync(zipRefundRequest)
                     .Result;
 
                 return response;
