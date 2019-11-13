@@ -59,6 +59,16 @@ namespace spice_sample_pos
             this.txtRefund = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.SettlementEnquiry = new System.Windows.Forms.TabPage();
+            this.ZipPurchase = new System.Windows.Forms.TabPage();
+            this.txtZipPurchaseDesc = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel11 = new MaterialSkin.Controls.MaterialLabel();
+            this.txtZipPurchase = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel12 = new MaterialSkin.Controls.MaterialLabel();
+            this.ZipRefund = new System.Windows.Forms.TabPage();
+            this.txtZipReceiptNumber = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
+            this.txtZipRefund = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel14 = new MaterialSkin.Controls.MaterialLabel();
             this.tsMain = new MaterialSkin.Controls.MaterialTabSelector();
             this.btnAction = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblReceipt = new MaterialSkin.Controls.MaterialLabel();
@@ -72,6 +82,8 @@ namespace spice_sample_pos
             this.Purchase.SuspendLayout();
             this.MOTO.SuspendLayout();
             this.Refund.SuspendLayout();
+            this.ZipPurchase.SuspendLayout();
+            this.ZipRefund.SuspendLayout();
             this.pnlResult.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,12 +103,14 @@ namespace spice_sample_pos
             this.tcMain.Controls.Add(this.MOTO);
             this.tcMain.Controls.Add(this.Refund);
             this.tcMain.Controls.Add(this.SettlementEnquiry);
+            this.tcMain.Controls.Add(this.ZipPurchase);
+            this.tcMain.Controls.Add(this.ZipRefund);
             this.tcMain.Depth = 0;
             this.tcMain.Location = new System.Drawing.Point(470, 116);
             this.tcMain.MouseState = MaterialSkin.MouseState.HOVER;
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(649, 422);
+            this.tcMain.Size = new System.Drawing.Size(754, 422);
             this.tcMain.TabIndex = 5;
             this.tcMain.SelectedIndexChanged += new System.EventHandler(this.tsMain_SelectedIndexChanged);
             // 
@@ -118,7 +132,7 @@ namespace spice_sample_pos
             this.Purchase.Location = new System.Drawing.Point(4, 22);
             this.Purchase.Name = "Purchase";
             this.Purchase.Padding = new System.Windows.Forms.Padding(3);
-            this.Purchase.Size = new System.Drawing.Size(641, 396);
+            this.Purchase.Size = new System.Drawing.Size(746, 396);
             this.Purchase.TabIndex = 0;
             this.Purchase.Text = "Purchase";
             // 
@@ -317,7 +331,7 @@ namespace spice_sample_pos
             this.MOTO.Controls.Add(this.materialLabel8);
             this.MOTO.Location = new System.Drawing.Point(4, 22);
             this.MOTO.Name = "MOTO";
-            this.MOTO.Size = new System.Drawing.Size(641, 396);
+            this.MOTO.Size = new System.Drawing.Size(746, 396);
             this.MOTO.TabIndex = 4;
             this.MOTO.Text = "MOTO";
             // 
@@ -444,7 +458,7 @@ namespace spice_sample_pos
             this.Refund.Location = new System.Drawing.Point(4, 22);
             this.Refund.Name = "Refund";
             this.Refund.Padding = new System.Windows.Forms.Padding(3);
-            this.Refund.Size = new System.Drawing.Size(641, 396);
+            this.Refund.Size = new System.Drawing.Size(746, 396);
             this.Refund.TabIndex = 1;
             this.Refund.Text = "Refund";
             // 
@@ -533,10 +547,165 @@ namespace spice_sample_pos
             this.SettlementEnquiry.Location = new System.Drawing.Point(4, 22);
             this.SettlementEnquiry.Name = "SettlementEnquiry";
             this.SettlementEnquiry.Padding = new System.Windows.Forms.Padding(3);
-            this.SettlementEnquiry.Size = new System.Drawing.Size(641, 396);
+            this.SettlementEnquiry.Size = new System.Drawing.Size(746, 396);
             this.SettlementEnquiry.TabIndex = 2;
             this.SettlementEnquiry.Text = "Settlement Enquiry";
             this.SettlementEnquiry.UseVisualStyleBackColor = true;
+            // 
+            // ZipPurchase
+            // 
+            this.ZipPurchase.BackColor = System.Drawing.SystemColors.Control;
+            this.ZipPurchase.Controls.Add(this.txtZipPurchaseDesc);
+            this.ZipPurchase.Controls.Add(this.materialLabel11);
+            this.ZipPurchase.Controls.Add(this.txtZipPurchase);
+            this.ZipPurchase.Controls.Add(this.materialLabel12);
+            this.ZipPurchase.Location = new System.Drawing.Point(4, 22);
+            this.ZipPurchase.Name = "ZipPurchase";
+            this.ZipPurchase.Size = new System.Drawing.Size(746, 396);
+            this.ZipPurchase.TabIndex = 5;
+            this.ZipPurchase.Text = "Zip Purchase";
+            // 
+            // txtZipPurchaseDesc
+            // 
+            this.txtZipPurchaseDesc.Depth = 0;
+            this.txtZipPurchaseDesc.Hint = "";
+            this.txtZipPurchaseDesc.Location = new System.Drawing.Point(7, 95);
+            this.txtZipPurchaseDesc.MaxLength = 32767;
+            this.txtZipPurchaseDesc.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtZipPurchaseDesc.Name = "txtZipPurchaseDesc";
+            this.txtZipPurchaseDesc.PasswordChar = '\0';
+            this.txtZipPurchaseDesc.SelectedText = "";
+            this.txtZipPurchaseDesc.SelectionLength = 0;
+            this.txtZipPurchaseDesc.SelectionStart = 0;
+            this.txtZipPurchaseDesc.Size = new System.Drawing.Size(348, 23);
+            this.txtZipPurchaseDesc.TabIndex = 18;
+            this.txtZipPurchaseDesc.TabStop = false;
+            this.txtZipPurchaseDesc.Text = "0";
+            this.txtZipPurchaseDesc.UseSystemPasswordChar = false;
+            // 
+            // materialLabel11
+            // 
+            this.materialLabel11.AutoSize = true;
+            this.materialLabel11.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel11.Depth = 0;
+            this.materialLabel11.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel11.Location = new System.Drawing.Point(3, 73);
+            this.materialLabel11.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel11.Name = "materialLabel11";
+            this.materialLabel11.Size = new System.Drawing.Size(90, 19);
+            this.materialLabel11.TabIndex = 17;
+            this.materialLabel11.Text = "Description:";
+            // 
+            // txtZipPurchase
+            // 
+            this.txtZipPurchase.Depth = 0;
+            this.txtZipPurchase.Hint = "";
+            this.txtZipPurchase.Location = new System.Drawing.Point(7, 37);
+            this.txtZipPurchase.MaxLength = 32767;
+            this.txtZipPurchase.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtZipPurchase.Name = "txtZipPurchase";
+            this.txtZipPurchase.PasswordChar = '\0';
+            this.txtZipPurchase.SelectedText = "";
+            this.txtZipPurchase.SelectionLength = 0;
+            this.txtZipPurchase.SelectionStart = 0;
+            this.txtZipPurchase.Size = new System.Drawing.Size(348, 23);
+            this.txtZipPurchase.TabIndex = 16;
+            this.txtZipPurchase.TabStop = false;
+            this.txtZipPurchase.Text = "0";
+            this.txtZipPurchase.UseSystemPasswordChar = false;
+            // 
+            // materialLabel12
+            // 
+            this.materialLabel12.AutoSize = true;
+            this.materialLabel12.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel12.Depth = 0;
+            this.materialLabel12.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel12.Location = new System.Drawing.Point(3, 15);
+            this.materialLabel12.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel12.Name = "materialLabel12";
+            this.materialLabel12.Size = new System.Drawing.Size(183, 19);
+            this.materialLabel12.TabIndex = 15;
+            this.materialLabel12.Text = "Purchase Amount - Cents:";
+            // 
+            // ZipRefund
+            // 
+            this.ZipRefund.BackColor = System.Drawing.SystemColors.Control;
+            this.ZipRefund.Controls.Add(this.txtZipReceiptNumber);
+            this.ZipRefund.Controls.Add(this.materialLabel13);
+            this.ZipRefund.Controls.Add(this.txtZipRefund);
+            this.ZipRefund.Controls.Add(this.materialLabel14);
+            this.ZipRefund.Location = new System.Drawing.Point(4, 22);
+            this.ZipRefund.Name = "ZipRefund";
+            this.ZipRefund.Padding = new System.Windows.Forms.Padding(3);
+            this.ZipRefund.Size = new System.Drawing.Size(746, 396);
+            this.ZipRefund.TabIndex = 6;
+            this.ZipRefund.Text = "Zip Refund";
+            // 
+            // txtZipReceiptNumber
+            // 
+            this.txtZipReceiptNumber.Depth = 0;
+            this.txtZipReceiptNumber.Hint = "";
+            this.txtZipReceiptNumber.Location = new System.Drawing.Point(7, 95);
+            this.txtZipReceiptNumber.MaxLength = 32767;
+            this.txtZipReceiptNumber.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtZipReceiptNumber.Name = "txtZipReceiptNumber";
+            this.txtZipReceiptNumber.PasswordChar = '\0';
+            this.txtZipReceiptNumber.SelectedText = "";
+            this.txtZipReceiptNumber.SelectionLength = 0;
+            this.txtZipReceiptNumber.SelectionStart = 0;
+            this.txtZipReceiptNumber.Size = new System.Drawing.Size(348, 23);
+            this.txtZipReceiptNumber.TabIndex = 22;
+            this.txtZipReceiptNumber.TabStop = false;
+            this.txtZipReceiptNumber.Text = "0";
+            this.txtZipReceiptNumber.UseSystemPasswordChar = false;
+            // 
+            // materialLabel13
+            // 
+            this.materialLabel13.AutoSize = true;
+            this.materialLabel13.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel13.Depth = 0;
+            this.materialLabel13.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel13.Location = new System.Drawing.Point(3, 73);
+            this.materialLabel13.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel13.Name = "materialLabel13";
+            this.materialLabel13.Size = new System.Drawing.Size(120, 19);
+            this.materialLabel13.TabIndex = 21;
+            this.materialLabel13.Text = "Receipt Number:";
+            // 
+            // txtZipRefund
+            // 
+            this.txtZipRefund.Depth = 0;
+            this.txtZipRefund.Hint = "";
+            this.txtZipRefund.Location = new System.Drawing.Point(7, 37);
+            this.txtZipRefund.MaxLength = 32767;
+            this.txtZipRefund.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtZipRefund.Name = "txtZipRefund";
+            this.txtZipRefund.PasswordChar = '\0';
+            this.txtZipRefund.SelectedText = "";
+            this.txtZipRefund.SelectionLength = 0;
+            this.txtZipRefund.SelectionStart = 0;
+            this.txtZipRefund.Size = new System.Drawing.Size(348, 23);
+            this.txtZipRefund.TabIndex = 20;
+            this.txtZipRefund.TabStop = false;
+            this.txtZipRefund.Text = "0";
+            this.txtZipRefund.UseSystemPasswordChar = false;
+            // 
+            // materialLabel14
+            // 
+            this.materialLabel14.AutoSize = true;
+            this.materialLabel14.BackColor = System.Drawing.SystemColors.Window;
+            this.materialLabel14.Depth = 0;
+            this.materialLabel14.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel14.Location = new System.Drawing.Point(3, 15);
+            this.materialLabel14.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel14.Name = "materialLabel14";
+            this.materialLabel14.Size = new System.Drawing.Size(167, 19);
+            this.materialLabel14.TabIndex = 19;
+            this.materialLabel14.Text = "Refund Amount - Cents:";
             // 
             // tsMain
             // 
@@ -545,7 +714,7 @@ namespace spice_sample_pos
             this.tsMain.Location = new System.Drawing.Point(470, 87);
             this.tsMain.MouseState = MaterialSkin.MouseState.HOVER;
             this.tsMain.Name = "tsMain";
-            this.tsMain.Size = new System.Drawing.Size(649, 23);
+            this.tsMain.Size = new System.Drawing.Size(754, 26);
             this.tsMain.TabIndex = 6;
             this.tsMain.Text = "tsMain";
             // 
@@ -555,13 +724,13 @@ namespace spice_sample_pos
             this.btnAction.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnAction.Depth = 0;
             this.btnAction.Icon = null;
-            this.btnAction.Location = new System.Drawing.Point(1028, 544);
-            this.btnAction.MaximumSize = new System.Drawing.Size(91, 36);
-            this.btnAction.MinimumSize = new System.Drawing.Size(91, 36);
+            this.btnAction.Location = new System.Drawing.Point(1074, 544);
+            this.btnAction.MaximumSize = new System.Drawing.Size(150, 36);
+            this.btnAction.MinimumSize = new System.Drawing.Size(150, 36);
             this.btnAction.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnAction.Name = "btnAction";
             this.btnAction.Primary = true;
-            this.btnAction.Size = new System.Drawing.Size(91, 36);
+            this.btnAction.Size = new System.Drawing.Size(150, 36);
             this.btnAction.TabIndex = 7;
             this.btnAction.Text = "Purchase";
             this.btnAction.UseVisualStyleBackColor = true;
@@ -626,7 +795,7 @@ namespace spice_sample_pos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1141, 587);
+            this.ClientSize = new System.Drawing.Size(1249, 587);
             this.Controls.Add(this.lblCurrentAdaptorStatus);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tcMain);
@@ -649,6 +818,10 @@ namespace spice_sample_pos
             this.MOTO.PerformLayout();
             this.Refund.ResumeLayout(false);
             this.Refund.PerformLayout();
+            this.ZipPurchase.ResumeLayout(false);
+            this.ZipPurchase.PerformLayout();
+            this.ZipRefund.ResumeLayout(false);
+            this.ZipRefund.PerformLayout();
             this.pnlResult.ResumeLayout(false);
             this.pnlResult.PerformLayout();
             this.ResumeLayout(false);
@@ -659,7 +832,6 @@ namespace spice_sample_pos
         #endregion
         private System.Windows.Forms.PictureBox pictureBox1;
         private MaterialSkin.Controls.MaterialTabControl tcMain;
-        private System.Windows.Forms.TabPage Purchase;
         private MaterialSkin.Controls.MaterialLabel materialLabel3;
         private System.Windows.Forms.TabPage Refund;
         private MaterialSkin.Controls.MaterialTabSelector tsMain;
@@ -695,6 +867,17 @@ namespace spice_sample_pos
         private MaterialSkin.Controls.MaterialRadioButton rbRefundSuppressPasswordNo;
         private MaterialSkin.Controls.MaterialLabel materialLabel10;
         private System.Windows.Forms.Label lblCurrentAdaptorStatus;
+        private System.Windows.Forms.TabPage ZipPurchase;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtZipPurchaseDesc;
+        private MaterialSkin.Controls.MaterialLabel materialLabel11;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtZipPurchase;
+        private MaterialSkin.Controls.MaterialLabel materialLabel12;
+        private System.Windows.Forms.TabPage Purchase;
+        private System.Windows.Forms.TabPage ZipRefund;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtZipReceiptNumber;
+        private MaterialSkin.Controls.MaterialLabel materialLabel13;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtZipRefund;
+        private MaterialSkin.Controls.MaterialLabel materialLabel14;
     }
 }
 

@@ -73,6 +73,10 @@ namespace spice_sample_pos
             rbRefundSuppressPasswordNo.Checked = true;
             txtMotoPurchase.Text = moneyDefault;
             txtMotoSurcharge.Text = moneyDefault;
+            txtZipPurchase.Text = moneyDefault;
+            txtZipRefund.Text = moneyDefault;
+            txtZipPurchaseDesc.Text = "";
+            txtZipReceiptNumber.Text = "";
 
             switch (tcMain.SelectedTab.Name)
             {
@@ -90,6 +94,12 @@ namespace spice_sample_pos
                     break;
                 case "PayAtTable":
                     btnAction.Text = "Pay at Table";
+                    break;
+                case "ZipPurchase":
+                    btnAction.Text = "Zip Purchase";
+                    break;
+                case "ZipRefund":
+                    btnAction.Text = "Zip Refund";
                     break;
                 default:
                     break;
@@ -116,7 +126,7 @@ namespace spice_sample_pos
                 return;
             }
 
-            switch (btnAction.Text)
+            switch (tcMain.SelectedTab.Name)
             {
                 case "Purchase":
                     bool purchaseParsed, cashoutParsed, tipParsed, surchargeParsed;
@@ -134,6 +144,26 @@ namespace spice_sample_pos
                         {
                             DisplayResult(response.Content.ReadAsStringAsync().Result);
                             IsSignatureRequired(response.Content.ReadAsStringAsync().Result, TransactionType.purchase);
+                        }
+                        else if (response.StatusCode == HttpStatusCode.RequestTimeout)
+                        {
+                            // Manual Override https://developer.assemblypayments.com/docs/manual-user-override
+                        }
+                    }
+
+                    break;
+                case "ZipPurchase":
+                    bool zipPurchaseParsed;
+
+                    zipPurchaseParsed = int.TryParse(txtZipPurchase.Text, NumberStyles.Currency, this._cultureInfo, out var zipPurchaseAmount);
+
+                    if (zipPurchaseParsed)
+                    {
+                        var response = SpiceApiLib.ZipPurchase(PosRefIdHelper(), zipPurchaseAmount, txtZipPurchaseDesc.Text, PosName, _posVersion);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            DisplayResult(response.Content.ReadAsStringAsync().Result);
                         }
                         else if (response.StatusCode == HttpStatusCode.RequestTimeout)
                         {
@@ -162,7 +192,7 @@ namespace spice_sample_pos
                 case "Refund":
                     bool refundParsed;
 
-                    refundParsed = int.TryParse(txtRefund.Text, NumberStyles.Currency, this._cultureInfo, out var refundAmount);
+                    refundParsed = int.TryParse(txtZipRefund.Text, NumberStyles.Currency, this._cultureInfo, out var refundAmount);
 
                     if (refundParsed)
                     {
@@ -180,11 +210,33 @@ namespace spice_sample_pos
                     }
 
                     break;
-                case "Enquiry":
+                case "ZipRefund":
+                    bool zipRefundParsed;
+
+                    zipRefundParsed = int.TryParse(txtZipRefund.Text, NumberStyles.Currency, this._cultureInfo, out var zipRefundAmount);
+
+                    if (zipRefundParsed)
+                    {
+                        var response = SpiceApiLib.ZipRefund(PosRefIdHelper(), zipRefundAmount, txtZipReceiptNumber.Text, PosName, _posVersion);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            DisplayResult(response.Content.ReadAsStringAsync().Result);
+                            IsSignatureRequired(response.Content.ReadAsStringAsync().Result, TransactionType.refund);
+                        }
+                        else if (response.StatusCode == HttpStatusCode.RequestTimeout)
+                        {
+                            // Manual Override https://developer.assemblypayments.com/docs/manual-user-override
+                        }
+                    }
+
+                    break;
+                case "SettlementEnquiry":
                     var enquiry = SpiceApiLib.SettlementEnquiry(PosRefIdHelper(), PosName, _posVersion);
                     DisplayResult(enquiry.Content.ReadAsStringAsync().Result);
 
                     break;
+             
                 case "Pay at Table":
                     break;
             }
